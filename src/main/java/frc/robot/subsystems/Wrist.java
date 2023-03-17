@@ -38,7 +38,7 @@ public class Wrist extends SubsystemBase {
 
   
     // This method will be called once per scheduler run
-    wristMotor = new CANSparkMax(Constants.ElevatorConstants.elevatorMotorID, MotorType.kBrushless);
+    wristMotor = new CANSparkMax(Constants.WristConstants.wristMotorID, MotorType.kBrushless);
 
     wristMotor.restoreFactoryDefaults();
     wristMotor.setSmartCurrentLimit(30);

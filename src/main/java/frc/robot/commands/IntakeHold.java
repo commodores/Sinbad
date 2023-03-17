@@ -23,7 +23,7 @@ public class IntakeHold extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Intake.runIntakeSpeed(-.04);
+    m_Intake.runIntakeSpeed(.04);
   }
 
   // Called once the command ends or is interrupted.
