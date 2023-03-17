@@ -39,7 +39,9 @@ public class RobotContainer {
     private final JoystickButton raiseArm = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
     private final JoystickButton lowerArm = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton raiseElevator = new JoystickButton(driver, XboxController.Button.kStart.value);
-    private final JoystickButton lowerElevator = new JoystickButton(driver, XboxController.Button.kBack.value); 
+    private final JoystickButton lowerElevator = new JoystickButton(driver, XboxController.Button.kBack.value);
+    private final JoystickButton raiseWrist = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton lowerWrist = new JoystickButton(driver, XboxController.Button.kB.value);
     
 
     /* Driver Buttons Controller 2 */
@@ -50,7 +52,7 @@ public class RobotContainer {
     private final JoystickButton mid = new JoystickButton(driverTwo, XboxController.Button.kX.value);
     private final JoystickButton high = new JoystickButton(driverTwo, XboxController.Button.kY.value);
     private final JoystickButton shelf = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
-    private final JoystickButton resetArm = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
+    //private final JoystickButton resetArm = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
 
 
     /* Subsystems */
@@ -58,45 +60,46 @@ public class RobotContainer {
     public final static Intake m_Intake = new Intake();
     public final static Arm m_Arm = new Arm();
     public final static Elevator m_Elevator = new Elevator();
+    public final static Wrist m_Wrist = new Wrist();
    
     private final SendableChooser<SequentialCommandGroup> autoChooser;
     private final AutoCommands autos;    
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
-    public RobotContainer() {
-        s_Swerve.setDefaultCommand(
-            new TeleopSwerve(
-                s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(rotationAxis)*.75, 
-                () -> robotCentric.getAsBoolean()
-            )
-        );
+   public RobotContainer() {
+      s_Swerve.setDefaultCommand(
+        new TeleopSwerve(
+          s_Swerve, 
+          () -> -driver.getRawAxis(translationAxis), 
+          () -> -driver.getRawAxis(strafeAxis), 
+          () -> -driver.getRawAxis(rotationAxis)*.75, 
+          () -> robotCentric.getAsBoolean()
+        )
+      );
 
-       // m_Intake.setDefaultCommand(new IntakeHold(m_Intake));
+      m_Intake.setDefaultCommand(new IntakeHold(m_Intake));
 
-        autos = new AutoCommands(s_Swerve);
-        autoChooser = new SendableChooser<>();
+      autos = new AutoCommands(s_Swerve);
+      autoChooser = new SendableChooser<>();
     
-        Set<String> keys = autos.autos.keySet();
-        autoChooser.setDefaultOption((String) keys.toArray()[1], autos.autos.get(keys.toArray()[1]));
-        //keys.remove((String) keys.toArray()[0]);
+      Set<String> keys = autos.autos.keySet();
+      autoChooser.setDefaultOption((String) keys.toArray()[1], autos.autos.get(keys.toArray()[1]));
+      keys.remove((String) keys.toArray()[0]);
     
-        for (String i : autos.autos.keySet()) {
-            autoChooser.addOption(i, autos.autos.get(i));
-        }
-    
-        SmartDashboard.putData("Auto Selector", autoChooser);
+      for (String i : autos.autos.keySet()) {
+        autoChooser.addOption(i, autos.autos.get(i));
+      }
 
-        SmartDashboard.putData("Reset Elevator", new ResetElevator(m_Elevator).withTimeout(.1));
+      SmartDashboard.putData("Auto Selector", autoChooser);
 
-        SmartDashboard.putData("Balance", new AutoBalance(s_Swerve));
+      SmartDashboard.putData("Reset Elevator", new ResetElevator(m_Elevator).withTimeout(.1));
+
+      SmartDashboard.putData("Balance", new AutoBalance(s_Swerve));
     
-        // Configure the button bindings
-        configureButtonBindings();
-    }
+      // Configure the button bindings
+      configureButtonBindings();
+}
 
     /**
      * Use this method to define your button->command mappings. Buttons can be created by
@@ -108,34 +111,36 @@ public class RobotContainer {
         
         /* Driver 1 Buttons */
 
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));//----Y Button
+       // zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));//----Y Button
         
-        raiseArm.onTrue(new ManualArm(m_Arm, .3));//----Right Bumper
+        raiseArm.onTrue(new ManualArm(m_Arm, .6));//----Right Bumper
         raiseArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
-        lowerArm.onTrue(new ManualArm(m_Arm, -.3));//----Left Bumper
+        lowerArm.onTrue(new ManualArm(m_Arm, -.6));//----Left Bumper
         lowerArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
 
-        raiseElevator.onTrue(new ManualElevator(m_Elevator, .3));//----Start Button
+        raiseElevator.onTrue(new ManualElevator(m_Elevator, .6));//----Start Button
         raiseElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
-        lowerElevator.onTrue(new ManualElevator(m_Elevator, -.3));//----Back Button
+        lowerElevator.onTrue(new ManualElevator(m_Elevator, -.6));//----Back Button
         lowerElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
+
+        raiseWrist.onTrue(new ManualWrist(m_Wrist, .3));//-------A Button
+        raiseWrist.onFalse(new ManualWrist(m_Wrist, 0));
+        lowerWrist.onTrue(new ManualWrist(m_Wrist, -.3));//-------B Button
+        lowerWrist.onTrue(new ManualWrist(m_Wrist, 0));
         
         /* Driver 2 Buttons */        
 
-        intake.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(-1)));//----Right Bumper
-        intake.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(-.02)));
-        release.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(.35)));//----Left Bumper
-        release.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(-.02)));
+        intake.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(1)));//----Right Bumper
+        intake.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.02)));
+        release.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(-1)));//----Left Bumper
+        release.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.02)));
         
         stow.onTrue(new Stow(m_Arm, m_Elevator));//----B Button
         ground.onTrue(new Ground(m_Arm, m_Elevator));//----A Button
         mid.onTrue(new Mid(m_Arm, m_Elevator));//----X Button
         high.onTrue(new High(m_Arm, m_Elevator));//----Y Button
         shelf.onTrue(new Shelf(m_Arm, m_Elevator));//----Start Button
-        resetArm.onTrue(new ResetArm(m_Arm));//-----Back Button
-
-        //raiseArm.onTrue(new InstantCommand(() -> m_TestArm.setGoal(0)));
-        //lowerArm.onTrue(new InstantCommand(() -> m_TestArm.setGoal(-10)));
+        
         
     }
 
@@ -145,8 +150,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-       // return new exampleAuto(s_Swerve);
        return autoChooser.getSelected();
     }
 }

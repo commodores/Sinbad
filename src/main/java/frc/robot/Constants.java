@@ -223,6 +223,29 @@ public final class Constants {
         public static final int intakeMotorID = 15;
     }
 
+    public static final class WristConstants {
+        // 1 unit = 0.2inches of travel
+        public static final int wristMotorID = 16;
+        public static final int wristSensorID = 0;
+        
+        // PID coefficients
+        public static final double wristKP = 0.0000; 
+        public static final double wristKI = 0.00000;
+        public static final double wristKD = 0; 
+        public static final double wristKIz = 0; 
+        public static final double wristKFF = 0.0003; 
+        public static final double wristKMaxOutput = 1; 
+        public static final double wristKMinOutput = -1;
+        public static final double wristMaxRPM = 5700;
+
+        // Smart Motion Coefficients
+        public static final int wristMinVel = 0; // rpm
+        public static final int wristMaxVel = 2500; // rpm
+        public static final int wristMaxAcc = 2000;
+        public static final double wristAllowedErr = .25;
+    }
+
+
     public static final class OIConstants {
         public static final int kDriverController = 0;
         public static final double kDriveDeadband = 0.05;

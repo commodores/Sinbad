@@ -5,16 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Wrist;
 
-public class ResetArm extends CommandBase {
-  private final Arm m_Arm;
+public class ManualWrist extends CommandBase {
+  private final Wrist m_Wrist;
+  double speed;
 
   /** Creates a new ShelfArm. */
-  public ResetArm(Arm subsystem) {
+  public ManualWrist(Wrist subsystem, double speedManual) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_Arm = subsystem;
-    addRequirements(m_Arm);
+    m_Wrist = subsystem;
+    addRequirements(m_Wrist);
+    speed = speedManual;
   }
 
   // Called when the command is initially scheduled.
@@ -24,18 +26,18 @@ public class ResetArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Arm.manualArm(.3);
+    m_Wrist.manualWrist(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Arm.manualArm(0);
+    m_Wrist.manualWrist(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_Arm.getLimitSwitch();
+    return false;
   }
 }

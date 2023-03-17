@@ -23,7 +23,6 @@ public class Arm extends SubsystemBase {
 
   private SparkMaxPIDController armPIDController;
   private RelativeEncoder armEncoder;
-  private SparkMaxLimitSwitch armLimit;
   
   double kP = Constants.ArmConstants.armKP,
     kI = Constants.ArmConstants.armKI,
@@ -47,16 +46,15 @@ public class Arm extends SubsystemBase {
     armMotor.setIdleMode(IdleMode.kBrake);
 
     //armMotor.setSoftLimit(SoftLimitDirection.kForward, 5);
-    armMotor.setSoftLimit(SoftLimitDirection.kReverse, -80);
+    //armMotor.setSoftLimit(SoftLimitDirection.kReverse, -80);
 
     //armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    //armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     // initialze PID controller and encoder objects
     armPIDController = armMotor.getPIDController();
     armEncoder = armMotor.getEncoder();
-    armLimit = armMotor.getForwardLimitSwitch(SparkMaxLimitSwitch.Type.kNormallyOpen);
-    armLimit.enableLimitSwitch(true);
+    
 
     // set PID coefficients
     armPIDController.setP(kP);
@@ -84,24 +82,6 @@ public class Arm extends SubsystemBase {
     armPIDController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     armPIDController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
-    
-
-
-    // display PID coefficients on SmartDashboard
-    //SmartDashboard.putNumber("Arm P Gain", kP);
-    //SmartDashboard.putNumber("Arm I Gain", kI);
-    //SmartDashboard.putNumber("Arm D Gain", kD);
-    //SmartDashboard.putNumber("Arm I Zone", kIz);
-    //SmartDashboard.putNumber("Arm Feed Forward", kFF);
-    //SmartDashboard.putNumber("Arm Max Output", kMaxOutput);
-    //SmartDashboard.putNumber("Arm Min Output", kMinOutput);
-
-    // display Smart Motion coefficients
-    //SmartDashboard.putNumber("Arm Max Velocity", maxVel);
-    //SmartDashboard.putNumber("Arm Min Velocity", minVel);
-    //SmartDashboard.putNumber("Arm Max Acceleration", maxAcc);
-    //SmartDashboard.putNumber("Arm Allowed Closed Loop Error", allowedErr);
-    //SmartDashboard.putNumber("Arm Position", 0);
   }
 
   public void setPosition(double targetPosition){
@@ -124,18 +104,9 @@ public class Arm extends SubsystemBase {
     armMotor.getEncoder().setPosition(0);
   }
 
-  public boolean getLimitSwitch(){
-    return armLimit.isPressed();
-  }
-
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Arm Current", getOutputCurrent());
     SmartDashboard.putNumber("Arm Position", getPosition());
-    SmartDashboard.putBoolean("Arm Limit", getLimitSwitch());
-
-    if(getLimitSwitch()){
-        resetEncoder();;
-    }
   }
 }

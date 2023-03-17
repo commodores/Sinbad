@@ -46,10 +46,10 @@ public class Elevator extends SubsystemBase {
     elevatorMotor.setSmartCurrentLimit(30);
     elevatorMotor.setIdleMode(IdleMode.kBrake);
 
-    elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, 132);
+    //elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, 132);
     //elevatorMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
 
-    elevatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    //elevatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     //elevatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     // initialze PID controller and encoder objects
@@ -83,21 +83,6 @@ public class Elevator extends SubsystemBase {
     elevatorPIDController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     elevatorPIDController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
-    // display PID coefficients on SmartDashboard
-    //SmartDashboard.putNumber("Elevator P Gain", kP);
-    //SmartDashboard.putNumber("Elevator I Gain", kI);
-    //SmartDashboard.putNumber("Elevator D Gain", kD);
-    //SmartDashboard.putNumber("Elevator I Zone", kIz);
-    //SmartDashboard.putNumber("Elevator Feed Forward", kFF);
-    //SmartDashboard.putNumber("Elevator Max Output", kMaxOutput);
-    //SmartDashboard.putNumber("Elevator Min Output", kMinOutput);
-
-    // display Smart Motion coefficients
-    //SmartDashboard.putNumber("Elevator Max Velocity", maxVel);
-    //SmartDashboard.putNumber("Elevator Min Velocity", minVel);
-    //SmartDashboard.putNumber("Elevator Max Acceleration", maxAcc);
-    //SmartDashboard.putNumber("Elevator Allowed Closed Loop Error", allowedErr);
-    //SmartDashboard.putNumber("Elevator Position", 0);
   }
 
   public void setPosition(double targetPosition){
