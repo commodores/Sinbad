@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,6 +24,7 @@ public class Arm extends SubsystemBase {
 
   private SparkMaxPIDController armPIDController;
   private RelativeEncoder armEncoder;
+  private DigitalInput armLimit;
   
   double kP = Constants.ArmConstants.armKP,
     kI = Constants.ArmConstants.armKI,
@@ -45,16 +47,16 @@ public class Arm extends SubsystemBase {
     armMotor.setSmartCurrentLimit(30);
     armMotor.setIdleMode(IdleMode.kBrake);
 
-    //armMotor.setSoftLimit(SoftLimitDirection.kForward, 5);
-    //armMotor.setSoftLimit(SoftLimitDirection.kReverse, -80);
+    armMotor.setSoftLimit(SoftLimitDirection.kForward, 120);
+    armMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
 
-    //armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    //armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     // initialze PID controller and encoder objects
     armPIDController = armMotor.getPIDController();
     armEncoder = armMotor.getEncoder();
-    
+    armLimit = new DigitalInput(0);
 
     // set PID coefficients
     armPIDController.setP(kP);
@@ -104,9 +106,15 @@ public class Arm extends SubsystemBase {
     armMotor.getEncoder().setPosition(0);
   }
 
+  public Boolean getArmLimit(){
+    return armLimit.get();
+  }
+
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Arm Current", getOutputCurrent());
     SmartDashboard.putNumber("Arm Position", getPosition());
+
+    SmartDashboard.putBoolean("Arm Limit", getArmLimit());
   }
 }

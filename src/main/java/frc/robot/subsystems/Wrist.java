@@ -44,11 +44,11 @@ public class Wrist extends SubsystemBase {
     wristMotor.setSmartCurrentLimit(30);
     wristMotor.setIdleMode(IdleMode.kBrake);
 
-    //wristMotor.setSoftLimit(SoftLimitDirection.kForward, 132);
-    //wristMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
+    wristMotor.setSoftLimit(SoftLimitDirection.kForward, 10);
+    wristMotor.setSoftLimit(SoftLimitDirection.kReverse, -65);
 
-    //wristMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    //wristMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    wristMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    wristMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     // initialze PID controller and encoder objects
     wristPIDController = wristMotor.getPIDController();

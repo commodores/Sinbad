@@ -78,7 +78,7 @@ public class RobotContainer {
         )
       );
 
-      m_Intake.setDefaultCommand(new IntakeHold(m_Intake));
+      //m_Intake.setDefaultCommand(new IntakeHold(m_Intake));
 
       autos = new AutoCommands(s_Swerve);
       autoChooser = new SendableChooser<>();
@@ -92,10 +92,6 @@ public class RobotContainer {
       }
 
       SmartDashboard.putData("Auto Selector", autoChooser);
-
-      SmartDashboard.putData("Reset Elevator", new ResetElevator(m_Elevator).withTimeout(.1));
-
-      SmartDashboard.putData("Balance", new AutoBalance(s_Swerve));
     
       // Configure the button bindings
       configureButtonBindings();
@@ -111,35 +107,35 @@ public class RobotContainer {
         
         /* Driver 1 Buttons */
 
-       // zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));//----Y Button
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));//----Y Button
         
-        raiseArm.onTrue(new ManualArm(m_Arm, .6));//----Right Bumper
+        raiseArm.onTrue(new ManualArm(m_Arm, 1));//----Right Bumper
         raiseArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
-        lowerArm.onTrue(new ManualArm(m_Arm, -.6));//----Left Bumper
+        lowerArm.onTrue(new ManualArm(m_Arm, -1));//----Left Bumper
         lowerArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
 
-        raiseElevator.onTrue(new ManualElevator(m_Elevator, .6));//----Start Button
+        raiseElevator.onTrue(new ManualElevator(m_Elevator, 1));//----Start Button
         raiseElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
-        lowerElevator.onTrue(new ManualElevator(m_Elevator, -.6));//----Back Button
+        lowerElevator.onTrue(new ManualElevator(m_Elevator, -1));//----Back Button
         lowerElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
 
-        raiseWrist.onTrue(new ManualWrist(m_Wrist, .3));//-------A Button
+        raiseWrist.onTrue(new ManualWrist(m_Wrist, .5));//-------A Button
         raiseWrist.onFalse(new ManualWrist(m_Wrist, 0));
-        lowerWrist.onTrue(new ManualWrist(m_Wrist, -.3));//-------B Button
-        lowerWrist.onTrue(new ManualWrist(m_Wrist, 0));
+        lowerWrist.onTrue(new ManualWrist(m_Wrist, -.5));//-------B Button
+        lowerWrist.onFalse(new ManualWrist(m_Wrist, 0));
         
         /* Driver 2 Buttons */        
 
-        intake.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(1)));//----Right Bumper
+        intake.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(.8)));//----Right Bumper
         intake.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.02)));
         release.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(-1)));//----Left Bumper
         release.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.02)));
         
-        stow.onTrue(new Stow(m_Arm, m_Elevator));//----B Button
-        ground.onTrue(new Ground(m_Arm, m_Elevator));//----A Button
-        mid.onTrue(new Mid(m_Arm, m_Elevator));//----X Button
-        high.onTrue(new High(m_Arm, m_Elevator));//----Y Button
-        shelf.onTrue(new Shelf(m_Arm, m_Elevator));//----Start Button
+        //stow.onTrue(new Stow(m_Arm, m_Elevator));//----B Button
+        ground.onTrue(new Ground(m_Arm, m_Elevator, m_Wrist));//----A Button
+        //mid.onTrue(new Mid(m_Arm, m_Elevator));//----X Button
+        //high.onTrue(new High(m_Arm, m_Elevator));//----Y Button
+        //shelf.onTrue(new Shelf(m_Arm, m_Elevator));//----Start Button
         
         
     }

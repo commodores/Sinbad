@@ -43,14 +43,14 @@ public class Elevator extends SubsystemBase {
     elevatorMotor = new CANSparkMax(Constants.ElevatorConstants.elevatorMotorID, MotorType.kBrushless);
 
     elevatorMotor.restoreFactoryDefaults();
-    elevatorMotor.setSmartCurrentLimit(30);
+    elevatorMotor.setSmartCurrentLimit(70);
     elevatorMotor.setIdleMode(IdleMode.kBrake);
 
-    //elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, 132);
-    //elevatorMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
+    elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, 160);
+    elevatorMotor.setSoftLimit(SoftLimitDirection.kReverse, 0);
 
-    //elevatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    //elevatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    elevatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    elevatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     // initialze PID controller and encoder objects
     elevatorPIDController = elevatorMotor.getPIDController();

@@ -5,15 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Wrist;
 
-public class GroundElevator extends CommandBase {
-  private final Elevator m_Elevator;
+public class GroundWrist extends CommandBase {
+  private final Wrist m_Wrist;
   /** Creates a new GroundElevator. */
-  public GroundElevator(Elevator subsystem) {
+  public GroundWrist(Wrist subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_Elevator = subsystem;
-    addRequirements(m_Elevator);
+    m_Wrist = subsystem;
+    addRequirements(m_Wrist);
   }
 
   // Called when the command is initially scheduled.
@@ -23,7 +23,7 @@ public class GroundElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Elevator.setPosition(41);
+    m_Wrist.setPosition(-15);
   }
 
   // Called once the command ends or is interrupted.

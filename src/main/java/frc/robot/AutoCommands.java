@@ -110,7 +110,7 @@ public class AutoCommands {
         eventMap.put("release", new AutoRelease(RobotContainer.m_Intake));
         eventMap.put("stopIntake", new StopIntake(RobotContainer.m_Intake));
         eventMap.put("stop", new AutoStop(RobotContainer.m_Intake));
-        eventMap.put("groundArm", new Ground(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(2));
+        eventMap.put("groundArm", new Ground(RobotContainer.m_Arm, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2));
         eventMap.put("stowArm", new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator));
         eventMap.put("highShot", new High(RobotContainer.m_Arm, RobotContainer.m_Elevator));
         eventMap.put("midShot", new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator)); 

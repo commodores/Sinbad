@@ -34,12 +34,10 @@ public class Swerve extends SubsystemBase {
     public SwerveDrivePoseEstimator poseEstimator;
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
-    public PhotonCameraPose photonPose;
-
+    
     public Field2d field = new Field2d();
 
     public Swerve() {
-        photonPose = new PhotonCameraPose();
         gyro = new Pigeon2(Constants.Swerve.pigeonID);
         gyro.configFactoryDefault();
         zeroGyro();
@@ -113,15 +111,6 @@ public class Swerve extends SubsystemBase {
     public void updateOdometry(){
         poseEstimator.update(getYaw(), getModulePositions());
 
-        Optional<EstimatedRobotPose> result = photonPose.getEstimatedGlobalPose(poseEstimator.getEstimatedPosition());
-
-        if (result.isPresent()) {
-            EstimatedRobotPose camPose = result.get();
-            poseEstimator.addVisionMeasurement(camPose.estimatedPose.toPose2d(), camPose.timestampSeconds);
-            field.getObject("Estimated Vision Position").setPose(camPose.estimatedPose.toPose2d());
-        } else {
-            field.getObject("Estimated Vision Position").setPose(new Pose2d(-100, -100, new Rotation2d()));
-        }
 
         field.getObject("Actual Pos").setPose(getPose());
         field.setRobotPose(poseEstimator.getEstimatedPosition());
