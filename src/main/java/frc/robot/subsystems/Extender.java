@@ -165,6 +165,7 @@ public class Extender extends TrapezoidProfileSubsystem {
 
     SmartDashboard.putNumber("Extender Distance Sensor Position", getDistanceSensor());
     SmartDashboard.putNumber("Extender Encoder Position", getEncoderDistance());
+    SmartDashboard.putString("Extender State", getExtenderState().toString());
 
 
   }
