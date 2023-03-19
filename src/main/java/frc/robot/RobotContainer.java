@@ -58,7 +58,7 @@ public class RobotContainer {
     /* Subsystems */
     public final static Swerve s_Swerve = new Swerve();
     public final static Intake m_Intake = new Intake();
-    public final static Arm m_Arm = new Arm();
+    public final static Extender m_Arm = new Extender();
     public final static Elevator m_Elevator = new Elevator();
     public final static Wrist m_Wrist = new Wrist();
    
@@ -109,10 +109,10 @@ public class RobotContainer {
 
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));//----Y Button
         
-        raiseArm.onTrue(new ManualArm(m_Arm, 1));//----Right Bumper
-        raiseArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
-        lowerArm.onTrue(new ManualArm(m_Arm, -1));//----Left Bumper
-        lowerArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
+        //raiseArm.onTrue(new ManualArm(m_Arm, 1));//----Right Bumper
+        //raiseArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
+        //lowerArm.onTrue(new ManualArm(m_Arm, -1));//----Left Bumper
+        //lowerArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
 
         raiseElevator.onTrue(new ManualElevator(m_Elevator, 1));//----Start Button
         raiseElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
@@ -132,7 +132,7 @@ public class RobotContainer {
         release.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.02)));
         
         //stow.onTrue(new Stow(m_Arm, m_Elevator));//----B Button
-        ground.onTrue(new Ground(m_Arm, m_Elevator, m_Wrist));//----A Button
+        //ground.onTrue(new Ground(m_Arm, m_Elevator, m_Wrist));//----A Button
         //mid.onTrue(new Mid(m_Arm, m_Elevator));//----X Button
         //high.onTrue(new High(m_Arm, m_Elevator));//----Y Button
         //shelf.onTrue(new Shelf(m_Arm, m_Elevator));//----Start Button

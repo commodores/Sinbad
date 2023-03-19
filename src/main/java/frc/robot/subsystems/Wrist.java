@@ -22,17 +22,7 @@ public class Wrist extends SubsystemBase {
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
   
-  double kP = Constants.WristConstants.wristKP,
-    kI = Constants.WristConstants.wristKI,
-    kD = Constants.WristConstants.wristKD,
-    kIz = Constants.WristConstants.wristKIz,
-    kFF = Constants.WristConstants.wristKFF, 
-    kMinOutput = Constants.WristConstants.wristKMinOutput,
-    kMaxOutput = Constants.WristConstants.wristKMaxOutput,
-    minVel = Constants.WristConstants.wristMinVel,
-    maxVel = Constants.WristConstants.wristMaxVel,
-    maxAcc = Constants.WristConstants.wristMaxAcc,
-    allowedErr = Constants.WristConstants.wristAllowedErr;
+  
 
   public Wrist() {
 
@@ -55,31 +45,7 @@ public class Wrist extends SubsystemBase {
     wristEncoder = wristMotor.getEncoder();
     
 
-    // set PID coefficients
-    wristPIDController.setP(kP);
-    wristPIDController.setI(kI);
-    wristPIDController.setD(kD);
-    wristPIDController.setIZone(kIz);
-    wristPIDController.setFF(kFF);
-    wristPIDController.setOutputRange(kMinOutput, kMaxOutput);
-
-    /**
-     * Smart Motion coefficients are set on a SparkMaxPIDController object
-     * 
-     * - setSmartMotionMaxVelocity() will limit the velocity in RPM of
-     * the pid controller in Smart Motion mode
-     * - setSmartMotionMinOutputVelocity() will put a lower bound in
-     * RPM of the pid controller in Smart Motion mode
-     * - setSmartMotionMaxAccel() will limit the acceleration in RPM^2
-     * of the pid controller in Smart Motion mode
-     * - setSmartMotionAllowedClosedLoopError() will set the max allowed
-     * error for the pid controller in Smart Motion mode
-     */
-    int smartMotionSlot = 0;
-    wristPIDController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-    wristPIDController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-    wristPIDController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-    wristPIDController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+    
 
   }
 

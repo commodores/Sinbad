@@ -25,18 +25,7 @@ public class Elevator extends SubsystemBase {
   private SparkMaxPIDController elevatorPIDController;
   private RelativeEncoder elevatorEncoder;
   
-  double kP = Constants.ElevatorConstants.elevatorKP,
-    kI = Constants.ElevatorConstants.elevatorKI,
-    kD = Constants.ElevatorConstants.elevatorKD,
-    kIz = Constants.ElevatorConstants.elevatorKIz,
-    kFF = Constants.ElevatorConstants.elevatorKFF, 
-    kMinOutput = Constants.ElevatorConstants.elevatorKMinOutput,
-    kMaxOutput = Constants.ElevatorConstants.elevatorKMaxOutput,
-    minVel = Constants.ElevatorConstants.elevatorMinVel,
-    maxVel = Constants.ElevatorConstants.elevatorMaxVel,
-    maxAcc = Constants.ElevatorConstants.elevatorMaxAcc,
-    allowedErr = Constants.ElevatorConstants.elevatorAllowedErr;
-
+  
   
   /** Creates a new Elevator. */
   public Elevator() {
@@ -56,32 +45,6 @@ public class Elevator extends SubsystemBase {
     elevatorPIDController = elevatorMotor.getPIDController();
     elevatorEncoder = elevatorMotor.getEncoder();
     
-
-    // set PID coefficients
-    elevatorPIDController.setP(kP);
-    elevatorPIDController.setI(kI);
-    elevatorPIDController.setD(kD);
-    elevatorPIDController.setIZone(kIz);
-    elevatorPIDController.setFF(kFF);
-    elevatorPIDController.setOutputRange(kMinOutput, kMaxOutput);
-
-    /**
-     * Smart Motion coefficients are set on a SparkMaxPIDController object
-     * 
-     * - setSmartMotionMaxVelocity() will limit the velocity in RPM of
-     * the pid controller in Smart Motion mode
-     * - setSmartMotionMinOutputVelocity() will put a lower bound in
-     * RPM of the pid controller in Smart Motion mode
-     * - setSmartMotionMaxAccel() will limit the acceleration in RPM^2
-     * of the pid controller in Smart Motion mode
-     * - setSmartMotionAllowedClosedLoopError() will set the max allowed
-     * error for the pid controller in Smart Motion mode
-     */
-    int smartMotionSlot = 0;
-    elevatorPIDController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
-    elevatorPIDController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
-    elevatorPIDController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
-    elevatorPIDController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
   }
 
