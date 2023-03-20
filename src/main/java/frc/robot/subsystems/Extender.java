@@ -24,7 +24,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 public class Extender extends TrapezoidProfileSubsystem {
 
-  public enum ExtenderState {HOME, FLOOR_CUBE, FLOOR_CONE, SHELF, MID, HIGH};
+  public enum ExtenderState {HOME, FLOOR_CUBE, FLOOR_CONE, SHELF, MID, HIGH, MANUAL};
   private final CANSparkMax extenderMotor = new CANSparkMax(ExtenderConstants.extenderMotorID, MotorType.kBrushless);;
   private final RelativeEncoder extenderEncoder;
   private SparkMaxPIDController extenderPIDController;
@@ -73,6 +73,11 @@ public class Extender extends TrapezoidProfileSubsystem {
     extenderPIDController.setFF(0, m_pidSlot);
     extenderPIDController.setOutputRange(ExtenderConstants.kMinOutput, ExtenderConstants.kMaxOutput, m_pidSlot);    
 
+  }
+
+  public void manualExtender(double speed){
+    extenderMotor.set(speed);
+    m_extenderState = ExtenderState.MANUAL;
   }
 
   public void homeExtender() {

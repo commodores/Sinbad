@@ -58,7 +58,7 @@ public class RobotContainer {
     /* Subsystems */
     public final static Swerve s_Swerve = new Swerve();
     public final static Intake m_Intake = new Intake();
-    public final static Extender m_Arm = new Extender();
+    public final static Extender m_Extender = new Extender();
     public final static Elevator m_Elevator = new Elevator();
     public final static Wrist m_Wrist = new Wrist();
    
