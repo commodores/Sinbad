@@ -4,174 +4,190 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.TrapezoidProfileSubsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ExtenderConstants;
 
 import com.playingwithfusion.TimeOfFlight;
-import com.playingwithfusion.TimeOfFlight.RangingMode;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 
 
-public class Extender extends TrapezoidProfileSubsystem {
+public class Extender extends SubsystemBase {
 
-  public enum ExtenderState {HOME, FLOOR_CUBE, FLOOR_CONE, SHELF, MID, HIGH, MANUAL};
-  private final CANSparkMax extenderMotor = new CANSparkMax(ExtenderConstants.extenderMotorID, MotorType.kBrushless);;
-  private final RelativeEncoder extenderEncoder;
+  private final CANSparkMax extenderMotor;
+
   private SparkMaxPIDController extenderPIDController;
-  private final int m_pidSlot = 0;
-  private ExtenderState m_extenderState = ExtenderState.HOME;
-  private TrapezoidProfile.State m_extenderPosVel = new TrapezoidProfile.State(0, 0);;
-
-  private final ElevatorFeedforward m_feedforward = new ElevatorFeedforward(
-    ExtenderConstants.kSVolts, ExtenderConstants.kGVolts, 
-    ExtenderConstants.kVVoltSecondPerMeter, ExtenderConstants.kAVoltSecondSquaredPerMeter);
-
-  private final TimeOfFlight extenderDistanceSensor = new TimeOfFlight(ExtenderConstants.extenderDistanceSensorID);  
+  private RelativeEncoder extenderEncoder;
+  private DigitalInput reverseLimitSwitch;
+  //private final TimeOfFlight extenderDistanceSensor;
+  private final double forwardLimit, reverseLimit;
+  
+  double kP = Constants.ExtenderConstants.extenderKP,
+    kI = Constants.ExtenderConstants.extenderKI,
+    kD = Constants.ExtenderConstants.extenderKD,
+    kIz = Constants.ExtenderConstants.extenderKIz,
+    kFF = Constants.ExtenderConstants.extenderKFF, 
+    kMinOutput = Constants.ExtenderConstants.extenderKMinOutput,
+    kMaxOutput = Constants.ExtenderConstants.extenderKMaxOutput,
+    minVel = Constants.ExtenderConstants.extenderMinVel,
+    maxVel = Constants.ExtenderConstants.extenderMaxVel,
+    maxAcc = Constants.ExtenderConstants.extenderMaxAcc,
+    allowedErr = Constants.ExtenderConstants.extenderAllowedErr;
 
   
-  /** Creates a new Arm. */
+  /** Creates a new Elevator. */
   public Extender() {
-    super(
-        // The constraints for the generated profiles
-        new TrapezoidProfile.Constraints(ExtenderConstants.kMaxVelMetersPerSec, ExtenderConstants.kMaxAccelMetersPerSecSquared),
-        // The initial position of the mechanism
-        ExtenderConstants.kInitialPosMeters);
+    extenderMotor = new CANSparkMax(ExtenderConstants.extenderMotorID, MotorType.kBrushless);
+
+    //extenderDistanceSensor = new TimeOfFlight(ExtenderConstants.extenderDistanceSensorID);  
 
     extenderMotor.restoreFactoryDefaults();
     extenderMotor.setSmartCurrentLimit(80);
     extenderMotor.setIdleMode(IdleMode.kBrake);
+    reverseLimit = Units.inchesToMeters(0)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor;
+    forwardLimit = Units.inchesToMeters(20)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor;
+
+    extenderMotor.setSoftLimit(SoftLimitDirection.kForward,((float)forwardLimit));
+    extenderMotor.setSoftLimit(SoftLimitDirection.kReverse, ((float)reverseLimit));
 
     extenderMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     extenderMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    extenderMotor.setSoftLimit(SoftLimitDirection.kForward, ExtenderConstants.kForwardSoftlimit);
-    extenderMotor.setSoftLimit(SoftLimitDirection.kReverse, ExtenderConstants.kReverseSoftLimit);
 
-    extenderEncoder = extenderMotor.getEncoder();
-    extenderDistanceSensor.setRangingMode(RangingMode.Short, 25);
-
-    // Set the PID coefficients for the Elevator motor
-    /**
-     * In order to use PID functionality for a controller, a SparkMaxPIDController object
-     * is constructed by calling the getPIDController() method on an existing
-     * CANSparkMax object
-     */
+    // initialze PID controller and encoder objects
     extenderPIDController = extenderMotor.getPIDController();
-    extenderPIDController.setP(ExtenderConstants.kP, m_pidSlot);
-    extenderPIDController.setI(ExtenderConstants.kI, m_pidSlot);
-    extenderPIDController.setD(ExtenderConstants.kD, m_pidSlot);
-    extenderPIDController.setIZone(0, m_pidSlot);
-    extenderPIDController.setFF(0, m_pidSlot);
-    extenderPIDController.setOutputRange(ExtenderConstants.kMinOutput, ExtenderConstants.kMaxOutput, m_pidSlot);    
+    extenderEncoder = extenderMotor.getEncoder();
+    reverseLimitSwitch = new DigitalInput(0);
 
+    // set PID coefficients
+    extenderPIDController.setP(kP);
+    extenderPIDController.setI(kI);
+    extenderPIDController.setD(kD);
+    extenderPIDController.setIZone(kIz);
+    extenderPIDController.setFF(kFF);
+    extenderPIDController.setOutputRange(kMinOutput, kMaxOutput);
+
+    /**
+     * Smart Motion coefficients are set on a SparkMaxPIDController object
+     * 
+     * - setSmartMotionMaxVelocity() will limit the velocity in RPM of
+     * the pid controller in Smart Motion mode
+     * - setSmartMotionMinOutputVelocity() will put a lower bound in
+     * RPM of the pid controller in Smart Motion mode
+     * - setSmartMotionMaxAccel() will limit the acceleration in RPM^2
+     * of the pid controller in Smart Motion mode
+     * - setSmartMotionAllowedClosedLoopError() will set the max allowed
+     * error for the pid controller in Smart Motion mode
+     */
+    int smartMotionSlot = 0;
+    extenderPIDController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+    extenderPIDController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+    extenderPIDController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+    extenderPIDController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
+
+   // seedEncoder();
+  }
+
+  public void setPosition(double targetPosition){
+    extenderPIDController.setReference(targetPosition, CANSparkMax.ControlType.kSmartMotion);
   }
 
   public void manualExtender(double speed){
     extenderMotor.set(speed);
-    m_extenderState = ExtenderState.MANUAL;
   }
 
-  public void homeExtender() {
-    if (m_extenderState == ExtenderState.HOME) {
-      return;
-    } else {
-      setGoal(ExtenderConstants.kHomePos_m);
-      m_extenderState = ExtenderState.HOME;
-    }
+  public double getOutputCurrent() {
+    return extenderMotor.getOutputCurrent();
   }
 
-  public void floorCubesExtender() {
-    if (m_extenderState == ExtenderState.FLOOR_CUBE) {
-      return;
-    } else {
-      setGoal(ExtenderConstants.kFloorCubePos_m);
-      m_extenderState = ExtenderState.FLOOR_CUBE;
-    }
+  public double getPosition() {
+    return Units.metersToInches(extenderEncoder.getPosition()/ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
   }
 
-  public void floorConesExtender() {
-    if (m_extenderState == ExtenderState.FLOOR_CONE) {
-      return;
-    } else {
-      setGoal(ExtenderConstants.kFloorConePos_m);
-      m_extenderState = ExtenderState.FLOOR_CONE;
-    }
+  public void resetEncoder(){
+    extenderMotor.getEncoder().setPosition(0);
   }
 
-  public void shelfExtender() {
-    if (m_extenderState == ExtenderState.SHELF) {
-      return;
-    } else {
-      setGoal(ExtenderConstants.kShelfPos_m);
-      m_extenderState = ExtenderState.SHELF;
-    }
+  public boolean getLimitSwitch(){
+    return !reverseLimitSwitch.get();
   }
 
-  public void midExtender() {
-    if (m_extenderState == ExtenderState.MID) {
-      return;
-    } else {
-      setGoal(ExtenderConstants.kMidPos_m);
-      m_extenderState = ExtenderState.MID;
-    }
-  }
+  //public double getDistanceSensor(){
+  //  return Units.metersToInches((extenderDistanceSensor.getRange()*.001)-.0127);
+  //}
 
-  public void highExtender() {
-    if (m_extenderState == ExtenderState.HIGH) {
-      return;
-    } else {
-      setGoal(ExtenderConstants.kHighPos_m);
-      m_extenderState = ExtenderState.HIGH;
-    }
-  }
+  //public void seedEncoder(){
+  //  extenderEncoder.setPosition(Units.inchesToMeters(getDistanceSensor()*ExtenderConstants.KExtenderMetersToNeoRotationsFactor));
+  //}
 
-  public ExtenderState getExtenderState() {
-    return m_extenderState;
-  }
 
-  public TrapezoidProfile.State getExtenderPosVel() {
-    return m_extenderPosVel;
-  }
-
-  public double getDistanceSensor(){
-    return extenderDistanceSensor.getRange()*10;
-  }
-
-  public double getEncoderDistance(){
-    return extenderEncoder.getPosition()*ExtenderConstants.KExtenderMetersToNeoRotationsFactor;
-  }
-
-  public void seedEncoder(){
-    extenderEncoder.setPosition(getDistanceSensor()/ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
-  }
 
   @Override
-  protected void useState(TrapezoidProfile.State state) {
-    // Use the computed profile state here.
-    // Calculate the feedforward from the sepoint
-    double feedforward = m_feedforward.calculate(state.position, state.velocity);
-    m_extenderPosVel = state;
-    extenderPIDController.setReference(state.position * ExtenderConstants.KExtenderMetersToNeoRotationsFactor, 
-        ControlType.kPosition, m_pidSlot, feedforward, ArbFFUnits.kVoltage);
+  public void periodic() {
+    SmartDashboard.putNumber("Extender Current", getOutputCurrent());
+    SmartDashboard.putNumber("Extender Position", getPosition());
+    //SmartDashboard.putNumber("Extender Distance Sensor Position", getDistanceSensor());
+    SmartDashboard.putBoolean("Extend Reverse Limit Switch", getLimitSwitch());
+
+    if(getLimitSwitch()){
+      resetEncoder();
+    }
+  
   }
 
-  @Override
-  public void periodic(){
-    super.periodic();
+    /*
+    // This method will be called once per scheduler run
+    // read PID coefficients from SmartDashboard
+    double p = SmartDashboard.getNumber("Elevator Set P Gain", 0);
+    double i = SmartDashboard.getNumber("Elevator Set I Gain", 0);
+    double d = SmartDashboard.getNumber("Elevator Set D Gain", 0);
+    double iz = SmartDashboard.getNumber("Elevator Set I Zone", 0);
+    double ff = SmartDashboard.getNumber("Elevator Set Feed Forward", 0);
+    double max = SmartDashboard.getNumber("Elevator Set Max Output", 0);
+    double min = SmartDashboard.getNumber("Elevator Set Min Output", 0);
+    double maxV = SmartDashboard.getNumber("Elevator Set Max Velocity", 0);
+    double minV = SmartDashboard.getNumber("Elevator Set Min Velocity", 0);
+    double maxA = SmartDashboard.getNumber("Elevator Set Max Acceleration", 0);
+    double allE = SmartDashboard.getNumber("Elevator Set Allowed Closed Loop Error", 0);
 
-    SmartDashboard.putNumber("Extender Distance Sensor Position", getDistanceSensor());
-    SmartDashboard.putNumber("Extender Encoder Position", getEncoderDistance());
-    SmartDashboard.putString("Extender State", getExtenderState().toString());
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+    if((p != kP)) { elevatorPIDController.setP(p); kP = p; }
+    if((i != kI)) { elevatorPIDController.setI(i); kI = i; }
+    if((d != kD)) { elevatorPIDController.setD(d); kD = d; }
+    if((iz != kIz)) { elevatorPIDController.setIZone(iz); kIz = iz; }
+    if((ff != kFF)) { elevatorPIDController.setFF(ff); kFF = ff; }
+    if((max != kMaxOutput) || (min != kMinOutput)) { 
+      elevatorPIDController.setOutputRange(min, max); 
+      kMinOutput = min; kMaxOutput = max; 
+    }
+    if((maxV != maxVel)) { elevatorPIDController.setSmartMotionMaxVelocity(maxV,0); maxVel = maxV; }
+    if((minV != minVel)) { elevatorPIDController.setSmartMotionMinOutputVelocity(minV,0); minVel = minV; }
+    if((maxA != maxAcc)) { elevatorPIDController.setSmartMotionMaxAccel(maxA,0); maxAcc = maxA; }
+    if((allE != allowedErr)) { elevatorPIDController.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
 
+    
+    double setPoint = SmartDashboard.getNumber("Set Position", 0);
+    
+      /**
+       * As with other PID modes, Smart Motion is set by calling the
+       * setReference method on an existing pid object and setting
+       * the control type to kSmartMotion
+       */
+    /*
+    elevatorPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
 
+    SmartDashboard.putNumber("SetPoint", setPoint);
+    SmartDashboard.putNumber("Output", elevatorMotor.getAppliedOutput());
+    */
+  
+  
   }
-}

@@ -21,6 +21,18 @@ public class Wrist extends SubsystemBase {
 
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
+
+  double kP = Constants.WristConstants.wristKP,
+    kI = Constants.WristConstants.wristKI,
+    kD = Constants.WristConstants.wristKD,
+    kIz = Constants.WristConstants.wristKIz,
+    kFF = Constants.WristConstants.wristKFF, 
+    kMinOutput = Constants.WristConstants.wristKMinOutput,
+    kMaxOutput = Constants.WristConstants.wristKMaxOutput,
+    minVel = Constants.WristConstants.wristMinVel,
+    maxVel = Constants.WristConstants.wristMaxVel,
+    maxAcc = Constants.WristConstants.wristMaxAcc,
+    allowedErr = Constants.WristConstants.wristAllowedErr;
   
   
 
@@ -34,8 +46,8 @@ public class Wrist extends SubsystemBase {
     wristMotor.setSmartCurrentLimit(30);
     wristMotor.setIdleMode(IdleMode.kBrake);
 
-    wristMotor.setSoftLimit(SoftLimitDirection.kForward, 10);
-    wristMotor.setSoftLimit(SoftLimitDirection.kReverse, -65);
+    wristMotor.setSoftLimit(SoftLimitDirection.kForward, 6);
+    wristMotor.setSoftLimit(SoftLimitDirection.kReverse, -54);
 
     wristMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     wristMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -44,7 +56,19 @@ public class Wrist extends SubsystemBase {
     wristPIDController = wristMotor.getPIDController();
     wristEncoder = wristMotor.getEncoder();
     
+    // set PID coefficients
+    wristPIDController.setP(kP);
+    wristPIDController.setI(kI);
+    wristPIDController.setD(kD);
+    wristPIDController.setIZone(kIz);
+    wristPIDController.setFF(kFF);
+    wristPIDController.setOutputRange(kMinOutput, kMaxOutput);
 
+    int smartMotionSlot = 0;
+    wristPIDController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+    wristPIDController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+    wristPIDController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
+    wristPIDController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
     
 
   }

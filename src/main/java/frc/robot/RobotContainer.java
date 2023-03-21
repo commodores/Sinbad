@@ -24,6 +24,17 @@ import frc.robot.subsystems.*;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+
+    /* Subsystems */
+    public final static Swerve s_Swerve = new Swerve();
+    public final static Intake m_Intake = new Intake();
+    public final static Extender m_Extender = new Extender();
+    public final static Elevator m_Elevator = new Elevator();
+    public final static Wrist m_Wrist = new Wrist();
+  
+    private final SendableChooser<SequentialCommandGroup> autoChooser;
+    private final AutoCommands autos;    
+
     /* Controllers */
     private final XboxController driver = new XboxController(0);
     private final XboxController driverTwo = new XboxController(1);
@@ -36,8 +47,8 @@ public class RobotContainer {
     /* Driver Buttons Controller 1 */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
     private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kX.value);    
-    private final JoystickButton raiseArm = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private final JoystickButton lowerArm = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton extendArm = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    private final JoystickButton retractArm = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton raiseElevator = new JoystickButton(driver, XboxController.Button.kStart.value);
     private final JoystickButton lowerElevator = new JoystickButton(driver, XboxController.Button.kBack.value);
     private final JoystickButton raiseWrist = new JoystickButton(driver, XboxController.Button.kA.value);
@@ -52,19 +63,10 @@ public class RobotContainer {
     private final JoystickButton mid = new JoystickButton(driverTwo, XboxController.Button.kX.value);
     private final JoystickButton high = new JoystickButton(driverTwo, XboxController.Button.kY.value);
     private final JoystickButton shelf = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
-    //private final JoystickButton resetArm = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
+    private final JoystickButton groundUp = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
 
 
-    /* Subsystems */
-    public final static Swerve s_Swerve = new Swerve();
-    public final static Intake m_Intake = new Intake();
-    public final static Extender m_Extender = new Extender();
-    public final static Elevator m_Elevator = new Elevator();
-    public final static Wrist m_Wrist = new Wrist();
-   
-    private final SendableChooser<SequentialCommandGroup> autoChooser;
-    private final AutoCommands autos;    
-
+    
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
    public RobotContainer() {
@@ -77,8 +79,6 @@ public class RobotContainer {
           () -> robotCentric.getAsBoolean()
         )
       );
-
-      //m_Intake.setDefaultCommand(new IntakeHold(m_Intake));
 
       autos = new AutoCommands(s_Swerve);
       autoChooser = new SendableChooser<>();
@@ -109,20 +109,21 @@ public class RobotContainer {
 
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));//----Y Button
         
-        //raiseArm.onTrue(new ManualArm(m_Arm, 1));//----Right Bumper
-        //raiseArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
-        //lowerArm.onTrue(new ManualArm(m_Arm, -1));//----Left Bumper
-        //lowerArm.onFalse(new ManualArm(m_Arm, 0).withTimeout(0.1));
-
-        raiseElevator.onTrue(new ManualElevator(m_Elevator, 1));//----Start Button
+        extendArm.onTrue(new ManualExtender(m_Extender, .7));//----Right Bumper
+        extendArm.onFalse(new ManualExtender(m_Extender, 0).withTimeout(0.1));
+        retractArm.onTrue(new ManualExtender(m_Extender, -.7));//----Left Bumper
+        retractArm.onFalse(new ManualExtender(m_Extender, 0).withTimeout(0.1));
+       
+        raiseElevator.onTrue(new ManualElevator(m_Elevator, .7));//----Start Button
         raiseElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
-        lowerElevator.onTrue(new ManualElevator(m_Elevator, -1));//----Back Button
+        lowerElevator.onTrue(new ManualElevator(m_Elevator, -.7));//----Back Button
         lowerElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
 
         raiseWrist.onTrue(new ManualWrist(m_Wrist, .5));//-------A Button
         raiseWrist.onFalse(new ManualWrist(m_Wrist, 0));
         lowerWrist.onTrue(new ManualWrist(m_Wrist, -.5));//-------B Button
         lowerWrist.onFalse(new ManualWrist(m_Wrist, 0));
+
         
         /* Driver 2 Buttons */        
 
@@ -131,11 +132,12 @@ public class RobotContainer {
         release.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(-1)));//----Left Bumper
         release.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.02)));
         
-        //stow.onTrue(new Stow(m_Arm, m_Elevator));//----B Button
-        //ground.onTrue(new Ground(m_Arm, m_Elevator, m_Wrist));//----A Button
-        //mid.onTrue(new Mid(m_Arm, m_Elevator));//----X Button
-        //high.onTrue(new High(m_Arm, m_Elevator));//----Y Button
-        //shelf.onTrue(new Shelf(m_Arm, m_Elevator));//----Start Button
+        stow.onTrue(new Stowed(m_Extender, m_Elevator, m_Wrist));//----B Button
+        ground.onTrue(new Ground(m_Extender, m_Elevator, m_Wrist));//----A Button
+        groundUp.onTrue(new GroundUp(m_Extender, m_Elevator, m_Wrist));//------Back Button
+        mid.onTrue(new Mid(m_Extender, m_Elevator, m_Wrist));//----X Button
+        high.onTrue(new High(m_Extender, m_Elevator, m_Wrist));//----Y Button
+        shelf.onTrue(new Shelf(m_Extender, m_Elevator, m_Wrist));//----Start Button
         
         
     }

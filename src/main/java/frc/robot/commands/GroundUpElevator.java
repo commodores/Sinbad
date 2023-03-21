@@ -4,19 +4,18 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Elevator;
 
-public class ManualElevator extends CommandBase {
+public class GroundUpElevator extends CommandBase {
   private final Elevator m_Elevator;
-  double speed;
-
-  /** Creates a new ShelfArm. */
-  public ManualElevator(Elevator subsystem, double speedManual) {
+  /** Creates a new GroundElevator. */
+  public GroundUpElevator(Elevator subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_Elevator = subsystem;
     addRequirements(m_Elevator);
-    speed = speedManual;
   }
 
   // Called when the command is initially scheduled.
@@ -28,13 +27,12 @@ public class ManualElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Elevator.manualElevator(speed);
+    m_Elevator.setPosition(Units.inchesToMeters(4.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Elevator.manualElevator(0);
     m_Elevator.seedEncoder();
   }
 

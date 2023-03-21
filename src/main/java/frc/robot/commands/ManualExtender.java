@@ -5,37 +5,38 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Extender;
 
-public class ManualElevator extends CommandBase {
-  private final Elevator m_Elevator;
+
+public class ManualExtender extends CommandBase {
+  private final Extender m_Extender;
   double speed;
 
   /** Creates a new ShelfArm. */
-  public ManualElevator(Elevator subsystem, double speedManual) {
+  public ManualExtender(Extender subsystem, double speedManual) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_Elevator = subsystem;
-    addRequirements(m_Elevator);
+    m_Extender = subsystem;
+    addRequirements(m_Extender);
     speed = speedManual;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_Elevator.seedEncoder();
+   // m_Extender.seedEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Elevator.manualElevator(speed);
+    m_Extender.manualExtender(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Elevator.manualElevator(0);
-    m_Elevator.seedEncoder();
+    m_Extender.manualExtender(0);
+   // m_Extender.seedEncoder();
   }
 
   // Returns true when the command should end.

@@ -164,84 +164,59 @@ public final class Constants {
     public static final class ExtenderConstants {
         
         public static final int extenderMotorID = 13;
-        public static final int extenderDistanceSensorID = 20;
+        public static final int extenderDistanceSensorID = 21;
 
-         // The following FeedForward estimates are theoritical values calculated from recalc tool (reca.lc)
-        // https://www.reca.lc/linear?efficiency=80&load=%7B%22s%22%3A120%2C%22u%22%3A%22lbs%22%7D&
-        // motor=%7B%22quantity%22%3A2%2C%22name%22%3A%22NEO%22%7D&ratio=%7B%22magnitude%22%3A20%2C
-        // %22ratioType%22%3A%22Reduction%22%7D&spoolDiameter=%7B%22s%22%3A0.787%2C%22u%22%3A%22in
-        // %22%7D&travelDistance=%7B%22s%22%3A24%2C%22u%22%3A%22in%22%7D
-        // Note: Assuming 0.5 power is sufficient to move the Elevator up. 0.5 power = 12*0.5 = 6Volts
-        public final static double kGVolts = 0.06; // Volts
-        public final static double kSVolts = .6-kGVolts; // armkSVolts = Volts_that_take_to_move_the_arm_from_rest - 
-                                                                //               armkSVolts
-        public final static double kVVoltSecondPerMeter = 30.86; // Volts * sec / radians
-        public final static double kAVoltSecondSquaredPerMeter = 0.01; // Volts * sec^2 / radians
+             // PID coefficients
+        public static final double extenderKP = 0.00; 
+        public static final double extenderKI = 0.00000;
+        public static final double extenderKD = 0; 
+        public static final double extenderKIz = 0; 
+        public static final double extenderKFF = 0.0016; 
+        public static final double extenderKMaxOutput = 1; 
+        public static final double extenderKMinOutput = -1;
+        public static final double extenderMaxRPM = 5700;
 
-        // The following Feedback estimates are taken from the WPILIB's ArmbotOffboard example
-        // These are not really applicable to ClimberElevator; they have to be tuned
-        // based on experimentation
-        // PID values for SparkMaxPIDController
-        public final static double kP = 1;
-        public final static double kI = 0;
-        public final static double kD = 0;
-        // Min and Max output power allowed by SparkMaxPIDController
-        public final static double kMinOutput = -1;
-        public final static double kMaxOutput = 1;
+        // Smart Motion Coefficients
+        public static final int extenderMinVel = 0; // rpm
+        public static final int extenderMaxVel = 2000; // rpm
+        public static final int extenderMaxAcc = 1500;
+        public static final double extenderAllowedErr = .25;
 
-        // Elevator Position
-        // Convention: _in=inches, _m=meters
-        //HOME, FLOOR_CUBE, FLOOR_CONE, SHELF, MID, HIGH
-        private final static double _homePos_in = 0;
-        private final static double _floorCubePos_in = 8;
-        private final static double _floorConePos_in = 12;
-        private final static double _shelfPos_in = 15;
-        private final static double _midPos_in = 17;
-        private final static double _highPos_in = 20;        
-        
-        public final static double kHomePos_m = Units.inchesToMeters(_homePos_in);
-        public final static double kFloorCubePos_m = Units.inchesToMeters(_floorCubePos_in);        
-        public final static double kFloorConePos_m = Units.inchesToMeters(_floorConePos_in);
-        public final static double kShelfPos_m = Units.inchesToMeters(_shelfPos_in);       
-        public final static double kMidPos_m = Units.inchesToMeters(_midPos_in);
-        public final static double kHighPos_m = Units.inchesToMeters(_highPos_in);
-
-
-        private final static double _gearRatio = 36; // 4:1 cartridge + 3:1 cartrdige + 3:1 Cartridge 
+        private final static double _gearRatio = 48; // 4:1 cartridge + 4:1 cartrdige + 3:1 Cartridge 
         private final static double _winchDia_in = 1.79; // For PWF Arm
         private final static double _winchDia_m = Units.inchesToMeters(_winchDia_in);
         private final static double _winchCircumference_m = _winchDia_m * Math.PI;
         public final static double KExtenderMetersToNeoRotationsFactor = _gearRatio / _winchCircumference_m;
-
-        // The following values in terms of Neo motor shaft rotations
-        private final static double _homePosNeoRotations = KExtenderMetersToNeoRotationsFactor * kHomePos_m;
-        private final static double _floorCubesPosNeoRotations = KExtenderMetersToNeoRotationsFactor * kFloorCubePos_m;
-        private final static double _floorConesPosNeoRotations = KExtenderMetersToNeoRotationsFactor * kFloorConePos_m;
-        private final static double _shelfPosNeoRotations = KExtenderMetersToNeoRotationsFactor * kShelfPos_m;
-        private final static double _midPosNeoRotations = KExtenderMetersToNeoRotationsFactor * kMidPos_m;
-        private final static double _highPosNeoRotations = KExtenderMetersToNeoRotationsFactor * kHighPos_m;
-
-        // Elevator position limits in units of Neo Motor shaft rotations
-        // Add 10% leeway for setting the softlimit
-        public final static float kForwardSoftlimit = (float)_highPosNeoRotations * (float)1.1; // in units of Neo motor shaft rotations
-        public final static float kReverseSoftLimit = (float)_homePosNeoRotations * (float)1.1; // in units of Neo motor shaft rotations
-        
-        // The following are constrains for the TrapezoidalProfile
-        // Note that the TrapezoidalProfile takes values in Meters whereas SparkMax's PIDController
-        // use number of Shaft Rotations
-        private final static double _maxVelElevaor_in_p_s = 10; // => 10 inches-per-sec velocity
-        private final static double _secondsToPeakVel = 1; // => 1 second to 0-to-peak velocity
-        private final static double _maxAccelElevator_in_p_ss = _maxVelElevaor_in_p_s / _secondsToPeakVel;
-        public final static double kMaxVelMetersPerSec = Units.inchesToMeters(_maxVelElevaor_in_p_s);
-        public final static double kMaxAccelMetersPerSecSquared = Units.inchesToMeters(_maxAccelElevator_in_p_ss);
-        public final static double kInitialPosMeters = Units.inchesToMeters(_homePos_in);
-        
+       
+         
     }
     
     public static final class ElevatorConstants {
 
         public static final int elevatorMotorID = 14;
-        public static final int extenderDistanceSensorID = 21;
+        public static final int elevatorDistanceSensorID = 22;
+
+        // PID coefficients
+        public static final double elevatorKP = 0.0000; 
+        public static final double elevatorKI = 0.00000;
+        public static final double elevatorKD = 0; 
+        public static final double elevatorKIz = 0; 
+        public static final double elevatorKFF = 0.0012; 
+        public static final double elevatorKMaxOutput = 1; 
+        public static final double elevatorKMinOutput = -1;
+        public static final double elevatorMaxRPM = 5700;
+
+        // Smart Motion Coefficients
+        public static final int elevatorMinVel = 0; // rpm
+        public static final int elevatorMaxVel = 2500; // rpm
+        public static final int elevatorMaxAcc = 2000;
+        public static final double elevatorAllowedErr = .15;
+
+        private final static double _gearRatio = 64; // 4:1 cartridge + 3:1 cartrdige + 3:1 Cartridge 
+        private final static double _winchDia_in = 1.79; // For PWF Arm
+        private final static double _winchDia_m = Units.inchesToMeters(_winchDia_in);
+        private final static double _winchCircumference_m = _winchDia_m * Math.PI;
+        public final static double KElevatorMetersToNeoRotationsFactor = _gearRatio / _winchCircumference_m;
         
     }
 
@@ -252,6 +227,23 @@ public final class Constants {
     public static final class WristConstants {
         
         public static final int wristMotorID = 16;
+
+         // PID coefficients
+         public static final double wristKP = 0.0000; 
+         public static final double wristKI = 0.00000;
+         public static final double wristKD = 0; 
+         public static final double wristKIz = 0; 
+         public static final double wristKFF = 0.0006; 
+         public static final double wristKMaxOutput = 1; 
+         public static final double wristKMinOutput = -1;
+         public static final double wristMaxRPM = 5700;
+ 
+         // Smart Motion Coefficients
+         public static final int wristMinVel = 0; // rpm
+         public static final int wristMaxVel = 2500; // rpm
+         public static final int wristMaxAcc = 2000;
+         public static final double wristAllowedErr = .15;
+        
 
     }
 

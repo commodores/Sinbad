@@ -43,7 +43,7 @@ public class AutoCommands {
         autos.put("Charge", new SequentialCommandGroup(
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
             //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
+            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
             getCommand(Charge),
             new AutoBalanceCommand(RobotContainer.s_Swerve),
@@ -55,7 +55,7 @@ public class AutoCommands {
          autos.put("RightSideOnePoint", new SequentialCommandGroup(
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
             //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
+            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
             getCommand(RightSideOnePoint)
          ));
@@ -65,11 +65,11 @@ public class AutoCommands {
          autos.put("TwoPoint", new SequentialCommandGroup(
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
             //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
+            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            getCommand(TwoPoint),
+            //getCommand(TwoPoint),
             //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3.5),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(0.75)//,
+            //new AutoRelease(RobotContainer.m_Intake).withTimeout(0.75)//,
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(2.0)
          ));
 
@@ -78,7 +78,7 @@ public class AutoCommands {
          autos.put("RightSideCharge", new SequentialCommandGroup(
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
             //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
+            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
             getCommand(RightSideCharge),
             new AutoBalanceCommand(RobotContainer.s_Swerve),
@@ -97,7 +97,7 @@ public class AutoCommands {
          autos.put("OnePointCharge", new SequentialCommandGroup(
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
             //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
+            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
             //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
             getCommand(OnePointCharge),
             new AutoBalanceCommand(RobotContainer.s_Swerve),
@@ -106,10 +106,10 @@ public class AutoCommands {
  
 
         //Events////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        eventMap.put("runIntake", new AutoIntake(RobotContainer.m_Intake).withTimeout(3));
-        eventMap.put("release", new AutoRelease(RobotContainer.m_Intake));
-        eventMap.put("stopIntake", new StopIntake(RobotContainer.m_Intake));
-        eventMap.put("stop", new AutoStop(RobotContainer.m_Intake));
+        //eventMap.put("runIntake", new AutoIntake(RobotContainer.m_Intake).withTimeout(3));
+        //eventMap.put("release", new AutoRelease(RobotContainer.m_Intake));
+        //eventMap.put("stopIntake", new StopIntake(RobotContainer.m_Intake));
+        //eventMap.put("stop", new AutoStop(RobotContainer.m_Intake));
         //eventMap.put("groundArm", new Ground(RobotContainer.m_Arm, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2));
         //eventMap.put("stowArm", new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator));
         //eventMap.put("highShot", new High(RobotContainer.m_Arm, RobotContainer.m_Elevator));
