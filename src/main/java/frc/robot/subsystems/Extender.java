@@ -143,51 +143,5 @@ public class Extender extends SubsystemBase {
     }
   
   }
-
-    /*
-    // This method will be called once per scheduler run
-    // read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("Elevator Set P Gain", 0);
-    double i = SmartDashboard.getNumber("Elevator Set I Gain", 0);
-    double d = SmartDashboard.getNumber("Elevator Set D Gain", 0);
-    double iz = SmartDashboard.getNumber("Elevator Set I Zone", 0);
-    double ff = SmartDashboard.getNumber("Elevator Set Feed Forward", 0);
-    double max = SmartDashboard.getNumber("Elevator Set Max Output", 0);
-    double min = SmartDashboard.getNumber("Elevator Set Min Output", 0);
-    double maxV = SmartDashboard.getNumber("Elevator Set Max Velocity", 0);
-    double minV = SmartDashboard.getNumber("Elevator Set Min Velocity", 0);
-    double maxA = SmartDashboard.getNumber("Elevator Set Max Acceleration", 0);
-    double allE = SmartDashboard.getNumber("Elevator Set Allowed Closed Loop Error", 0);
-
-    // if PID coefficients on SmartDashboard have changed, write new values to controller
-    if((p != kP)) { elevatorPIDController.setP(p); kP = p; }
-    if((i != kI)) { elevatorPIDController.setI(i); kI = i; }
-    if((d != kD)) { elevatorPIDController.setD(d); kD = d; }
-    if((iz != kIz)) { elevatorPIDController.setIZone(iz); kIz = iz; }
-    if((ff != kFF)) { elevatorPIDController.setFF(ff); kFF = ff; }
-    if((max != kMaxOutput) || (min != kMinOutput)) { 
-      elevatorPIDController.setOutputRange(min, max); 
-      kMinOutput = min; kMaxOutput = max; 
-    }
-    if((maxV != maxVel)) { elevatorPIDController.setSmartMotionMaxVelocity(maxV,0); maxVel = maxV; }
-    if((minV != minVel)) { elevatorPIDController.setSmartMotionMinOutputVelocity(minV,0); minVel = minV; }
-    if((maxA != maxAcc)) { elevatorPIDController.setSmartMotionMaxAccel(maxA,0); maxAcc = maxA; }
-    if((allE != allowedErr)) { elevatorPIDController.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
-
-    
-    double setPoint = SmartDashboard.getNumber("Set Position", 0);
-    
-      /**
-       * As with other PID modes, Smart Motion is set by calling the
-       * setReference method on an existing pid object and setting
-       * the control type to kSmartMotion
-       */
-    /*
-    elevatorPIDController.setReference(setPoint, CANSparkMax.ControlType.kSmartMotion);
-
-    SmartDashboard.putNumber("SetPoint", setPoint);
-    SmartDashboard.putNumber("Output", elevatorMotor.getAppliedOutput());
-    */
   
-  
-  }
+}
