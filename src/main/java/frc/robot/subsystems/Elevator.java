@@ -55,7 +55,7 @@ public class Elevator extends SubsystemBase {
     elevatorMotor.setSmartCurrentLimit(80);
     elevatorMotor.setIdleMode(IdleMode.kBrake);
     reverseLimit = 0;
-    forwardLimit = Units.inchesToMeters(17.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor;
+    forwardLimit = Units.inchesToMeters(18.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor;
 
 
     elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, ((float)forwardLimit));
@@ -118,6 +118,11 @@ public class Elevator extends SubsystemBase {
   public void resetEncoder(){
     elevatorMotor.getEncoder().setPosition(0);
   }
+
+  public void setEncoder(double position){
+    elevatorMotor.getEncoder().setPosition(position);
+  }
+
 
   //public double getDistanceSensor(){
    // return Units.metersToInches((extenderDistanceSensor.getRange()*.001)-.05588);

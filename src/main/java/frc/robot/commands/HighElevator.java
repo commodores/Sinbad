@@ -27,7 +27,7 @@ public class HighElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Elevator.setPosition(Units.inchesToMeters(17.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
+    m_Elevator.setPosition(Units.inchesToMeters(18.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
   }
 
   // Called once the command ends or is interrupted.

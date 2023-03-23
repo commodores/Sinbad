@@ -5,8 +5,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.WristConstants;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -21,6 +24,7 @@ public class Wrist extends SubsystemBase {
 
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
+  private final DigitalInput reverseLimitSwitch;
 
   double kP = Constants.WristConstants.wristKP,
     kI = Constants.WristConstants.wristKI,
@@ -46,7 +50,7 @@ public class Wrist extends SubsystemBase {
     wristMotor.setSmartCurrentLimit(30);
     wristMotor.setIdleMode(IdleMode.kBrake);
 
-    wristMotor.setSoftLimit(SoftLimitDirection.kForward, 6);
+    wristMotor.setSoftLimit(SoftLimitDirection.kForward, 8);
     wristMotor.setSoftLimit(SoftLimitDirection.kReverse, -54);
 
     wristMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
@@ -55,6 +59,7 @@ public class Wrist extends SubsystemBase {
     // initialze PID controller and encoder objects
     wristPIDController = wristMotor.getPIDController();
     wristEncoder = wristMotor.getEncoder();
+    reverseLimitSwitch = new DigitalInput(2);
     
     // set PID coefficients
     wristPIDController.setP(kP);
@@ -90,7 +95,15 @@ public class Wrist extends SubsystemBase {
   }
 
   public void resetEncoder(){
-    wristMotor.getEncoder().setPosition(0);
+    wristEncoder.setPosition(8);
+  }
+
+  public void setEncoder(double position){
+    wristEncoder.setPosition(position);
+  }
+
+  public boolean getLimitSwitch(){
+    return !reverseLimitSwitch.get();
   }
 
 
@@ -98,6 +111,7 @@ public class Wrist extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Wrist Current", getOutputCurrent());
     SmartDashboard.putNumber("Wrist Position", getPosition());
+    SmartDashboard.putBoolean("Wrist Reverse Limit Switch", getLimitSwitch());
   }
 
 }

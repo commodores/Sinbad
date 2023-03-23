@@ -53,7 +53,7 @@ public class RobotContainer {
     private final JoystickButton lowerElevator = new JoystickButton(driver, XboxController.Button.kBack.value);
     private final JoystickButton raiseWrist = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton lowerWrist = new JoystickButton(driver, XboxController.Button.kB.value);
-    private final JoystickButton resetElevator = new JoystickButton(driver, XboxController.Button.kRightStick.value);
+    private final JoystickButton homeEverything = new JoystickButton(driver, XboxController.Button.kRightStick.value);
     
 
     /* Driver Buttons Controller 2 */
@@ -116,9 +116,9 @@ public class RobotContainer {
         retractArm.onTrue(new ManualExtender(m_Extender, -.7));//----Left Bumper
         retractArm.onFalse(new ManualExtender(m_Extender, 0).withTimeout(0.1));
        
-        raiseElevator.onTrue(new ManualElevator(m_Elevator, .7));//----Start Button
+        raiseElevator.onTrue(new ManualElevator(m_Elevator, .5));//----Start Button
         raiseElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
-        lowerElevator.onTrue(new ManualElevator(m_Elevator, -.7));//----Back Button
+        lowerElevator.onTrue(new ManualElevator(m_Elevator, -.5));//----Back Button
         lowerElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
 
         raiseWrist.onTrue(new ManualWrist(m_Wrist, .5));//-------A Button
@@ -126,7 +126,7 @@ public class RobotContainer {
         lowerWrist.onTrue(new ManualWrist(m_Wrist, -.5));//-------B Button
         lowerWrist.onFalse(new ManualWrist(m_Wrist, 0));
 
-       // resetElevator.onTrue(new InstantCommand(() -> m_Elevator.seedEncoder()));//-------right Stick button
+        homeEverything.onTrue(new Home(m_Extender, m_Elevator, m_Wrist, m_Intake));//-------right Stick button
 
         
         /* Driver 2 Buttons */        

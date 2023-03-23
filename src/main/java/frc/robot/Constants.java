@@ -182,7 +182,7 @@ public final class Constants {
         public static final int extenderMaxAcc = 2000;
         public static final double extenderAllowedErr = .25;
 
-        private final static double _gearRatio = 48; // 4:1 cartridge + 4:1 cartrdige + 3:1 Cartridge 
+        private final static double _gearRatio = 22; // 4:1 cartridge + 4:1 cartrdige + 1.375 
         private final static double _winchDia_in = 1.79; // For PWF Arm
         private final static double _winchDia_m = Units.inchesToMeters(_winchDia_in);
         private final static double _winchCircumference_m = _winchDia_m * Math.PI;
@@ -212,8 +212,8 @@ public final class Constants {
         public static final int elevatorMaxAcc = 2000;
         public static final double elevatorAllowedErr = .15;
 
-        private final static double _gearRatio = 64; // 4:1 cartridge + 3:1 cartrdige + 3:1 Cartridge 
-        private final static double _winchDia_in = 1.65; // For PWF Arm
+        private final static double _gearRatio = 36; // 4:1 cartridge + 3:1 cartrdige + 3:1 Cartridge 
+        private final static double _winchDia_in = 1.79; // For PWF Arm
         private final static double _winchDia_m = Units.inchesToMeters(_winchDia_in);
         private final static double _winchCircumference_m = _winchDia_m * Math.PI;
         public final static double KElevatorMetersToNeoRotationsFactor = _gearRatio / _winchCircumference_m;

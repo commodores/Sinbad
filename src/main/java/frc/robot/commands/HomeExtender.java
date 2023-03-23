@@ -9,32 +9,42 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ExtenderConstants;
 import frc.robot.subsystems.Extender;
 
-public class GroundExtender extends CommandBase {
+
+
+public class HomeExtender extends CommandBase {
   private final Extender m_Extender;
-  /** Creates a new GroundArm. */
-  public GroundExtender(Extender subsystem) {
+  /** Creates a new HomeExtender. */
+  public HomeExtender(Extender subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_Extender = subsystem;
+
     addRequirements(m_Extender);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+    m_Extender.setEncoder(Units.inchesToMeters(20)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Extender.setPosition(Units.inchesToMeters(14.4)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
+
+    m_Extender.manualExtender(-.4);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+    m_Extender.manualExtender(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return m_Extender.getLimitSwitch();
   }
 }

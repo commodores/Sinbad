@@ -4,37 +4,52 @@
 
 package frc.robot.commands;
 
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ExtenderConstants;
-import frc.robot.subsystems.Extender;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.subsystems.Elevator;
 
-public class GroundExtender extends CommandBase {
-  private final Extender m_Extender;
-  /** Creates a new GroundArm. */
-  public GroundExtender(Extender subsystem) {
+
+public class HomeElevator extends CommandBase {
+
+  private final Elevator m_Elevator;
+  /** Creates a new HomeElevator. */
+
+  public HomeElevator( Elevator subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_Extender = subsystem;
-    addRequirements(m_Extender);
+
+    m_Elevator = subsystem;
+
+    addRequirements(m_Elevator);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+    m_Elevator.setEncoder(Units.inchesToMeters(18.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Extender.setPosition(Units.inchesToMeters(14.4)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
+
+    m_Elevator.manualElevator(-0.4);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+
+    m_Elevator.manualElevator(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+
+    return m_Elevator.getLimitSwitch();
   }
 }
