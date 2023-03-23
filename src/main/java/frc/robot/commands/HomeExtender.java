@@ -38,8 +38,8 @@ public class HomeExtender extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
     m_Extender.manualExtender(0);
+    m_Extender.resetEncoder();
   }
 
   // Returns true when the command should end.

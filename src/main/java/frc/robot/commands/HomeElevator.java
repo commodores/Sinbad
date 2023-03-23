@@ -42,8 +42,8 @@ public class HomeElevator extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
     m_Elevator.manualElevator(0);
+    m_Elevator.resetEncoder();
   }
 
   // Returns true when the command should end.

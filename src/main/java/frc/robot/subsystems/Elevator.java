@@ -145,9 +145,7 @@ public class Elevator extends SubsystemBase {
     //SmartDashboard.putNumber("Elevator Distance Sensor Position", getDistanceSensor());
     SmartDashboard.putBoolean("Elevator Reverse Limit Switch", getLimitSwitch());
 
-    if(getLimitSwitch()){
-      resetEncoder();
-    }
+    
   }
 
   

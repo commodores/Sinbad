@@ -142,10 +142,6 @@ public class Extender extends SubsystemBase {
     SmartDashboard.putNumber("Extender Position", getPosition());
     //SmartDashboard.putNumber("Extender Distance Sensor Position", getDistanceSensor());
     SmartDashboard.putBoolean("Extend Reverse Limit Switch", getLimitSwitch());
-
-    if(getLimitSwitch()){
-      resetEncoder();
-    }
   
   }
   
