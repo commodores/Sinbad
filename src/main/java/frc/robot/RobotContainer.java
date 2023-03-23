@@ -131,7 +131,7 @@ public class RobotContainer {
         
         /* Driver 2 Buttons */        
 
-        intake.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(.80)));//----Right Bumper
+        intake.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(.8)));//----Right Bumper
         intake.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.04)));
         release.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(-.8)));//----Left Bumper
         release.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.04)));

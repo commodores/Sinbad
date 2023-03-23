@@ -34,6 +34,7 @@ public class AutoCommands {
         autos = new HashMap<String, SequentialCommandGroup>();
         eventMap = new HashMap<String, Command>();
         
+        /////Do Nothing//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         autos.put("nothing", new SequentialCommandGroup(
             new Nothing()
         ));
@@ -41,79 +42,30 @@ public class AutoCommands {
         /////Charge Auto//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         List<PathPlannerTrajectory> Charge = PathPlanner.loadPathGroup("Charge", new PathConstraints(1.25, 1.25));
         autos.put("Charge", new SequentialCommandGroup(
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
+            new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.1),
+            new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
             getCommand(Charge),
             new AutoBalanceCommand(RobotContainer.s_Swerve),
             new AutoLock(RobotContainer.s_Swerve)
         ));
 
-         //RightSideOnePoint/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-         List<PathPlannerTrajectory> RightSideOnePoint = PathPlanner.loadPathGroup("RightSideOnePoint", new PathConstraints(2, 1));
-         autos.put("RightSideOnePoint", new SequentialCommandGroup(
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            getCommand(RightSideOnePoint)
-         ));
-
-         //TwoPoint/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-         List<PathPlannerTrajectory> TwoPoint = PathPlanner.loadPathGroup("TwoPoint", new PathConstraints(3, 2));
-         autos.put("TwoPoint", new SequentialCommandGroup(
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            //getCommand(TwoPoint),
-            //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3.5),
-            //new AutoRelease(RobotContainer.m_Intake).withTimeout(0.75)//,
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(2.0)
-         ));
-
-         //RightSideCharge/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-         List<PathPlannerTrajectory> RightSideCharge = PathPlanner.loadPathGroup("RightSideCharge", new PathConstraints(3.5, 2));
-         autos.put("RightSideCharge", new SequentialCommandGroup(
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            getCommand(RightSideCharge),
+        /////Auto Balance Tester//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        List<PathPlannerTrajectory> AutoBalanceTest = PathPlanner.loadPathGroup("AutoBalanceTest", new PathConstraints(1, 1));
+        autos.put("AutoBalanceTest", new SequentialCommandGroup(
+            getCommand(AutoBalanceTest),
             new AutoBalanceCommand(RobotContainer.s_Swerve),
             new AutoLock(RobotContainer.s_Swerve)
-            
-         ));
-
-         List<PathPlannerTrajectory> AutoBalanceTest = PathPlanner.loadPathGroup("AutoBalanceTest", new PathConstraints(1, 1));
-         autos.put("AutoBalanceTest", new SequentialCommandGroup(
-             getCommand(AutoBalanceTest),
-             new AutoBalanceCommand(RobotContainer.s_Swerve),
-             new AutoLock(RobotContainer.s_Swerve)
-         ));
-
-         List<PathPlannerTrajectory> OnePointCharge = PathPlanner.loadPathGroup("OnePointCharge", new PathConstraints(3, 2));
-         autos.put("OnePointCharge", new SequentialCommandGroup(
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            //new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(3),
-            //new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
-            //new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator).withTimeout(.5),
-            getCommand(OnePointCharge),
-            new AutoBalanceCommand(RobotContainer.s_Swerve),
-            new AutoLock(RobotContainer.s_Swerve)
-         ));
- 
+        )); 
 
         //Events////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //eventMap.put("runIntake", new AutoIntake(RobotContainer.m_Intake).withTimeout(3));
-        //eventMap.put("release", new AutoRelease(RobotContainer.m_Intake));
-        //eventMap.put("stopIntake", new StopIntake(RobotContainer.m_Intake));
-        //eventMap.put("stop", new AutoStop(RobotContainer.m_Intake));
-        //eventMap.put("groundArm", new Ground(RobotContainer.m_Arm, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2));
-        //eventMap.put("stowArm", new Stow(RobotContainer.m_Arm, RobotContainer.m_Elevator));
-        //eventMap.put("highShot", new High(RobotContainer.m_Arm, RobotContainer.m_Elevator));
-        //eventMap.put("midShot", new Mid(RobotContainer.m_Arm, RobotContainer.m_Elevator)); 
+        eventMap.put("runIntake", new AutoIntake(RobotContainer.m_Intake));
+        eventMap.put("release", new AutoRelease(RobotContainer.m_Intake));
+        eventMap.put("stopIntake", new StopIntake(RobotContainer.m_Intake));
+        eventMap.put("ground", new Ground(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
+        eventMap.put("groundUp", new GroundUp(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
+        eventMap.put("stow", new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
+        eventMap.put("high", new High(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
+        eventMap.put("mid", new Mid(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist)); 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
