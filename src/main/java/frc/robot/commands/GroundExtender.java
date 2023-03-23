@@ -25,7 +25,7 @@ public class GroundExtender extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Extender.setPosition(Units.inchesToMeters(15.5)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
+    m_Extender.setPosition(Units.inchesToMeters(16)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
   }
 
   // Called once the command ends or is interrupted.

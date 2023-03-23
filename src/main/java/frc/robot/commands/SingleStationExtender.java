@@ -7,15 +7,15 @@ package frc.robot.commands;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ExtenderConstants;
-import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.Extender;
 
-public class MidWrist extends CommandBase {
-  private final Wrist m_Wrist;
+public class SingleStationExtender extends CommandBase {
+  private final Extender m_Extender;
   /** Creates a new GroundArm. */
-  public MidWrist(Wrist subsystem) {
+  public SingleStationExtender(Extender subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_Wrist = subsystem;
-    addRequirements(m_Wrist);
+    m_Extender = subsystem;
+    addRequirements(m_Extender);
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +25,7 @@ public class MidWrist extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Wrist.setPosition(-50);
+    m_Extender.setPosition(Units.inchesToMeters(0)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
   }
 
   // Called once the command ends or is interrupted.

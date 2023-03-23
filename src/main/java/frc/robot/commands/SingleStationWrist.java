@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ExtenderConstants;
 import frc.robot.subsystems.Wrist;
 
-public class MidWrist extends CommandBase {
+public class SingleStationWrist extends CommandBase {
   private final Wrist m_Wrist;
   /** Creates a new GroundArm. */
-  public MidWrist(Wrist subsystem) {
+  public SingleStationWrist(Wrist subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_Wrist = subsystem;
     addRequirements(m_Wrist);
@@ -25,7 +25,7 @@ public class MidWrist extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Wrist.setPosition(-50);
+    m_Wrist.setPosition(-5);
   }
 
   // Called once the command ends or is interrupted.

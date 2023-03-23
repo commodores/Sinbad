@@ -27,8 +27,9 @@ public class Elevator extends SubsystemBase {
 
   private SparkMaxPIDController elevatorPIDController;
   private RelativeEncoder elevatorEncoder;
-  private final TimeOfFlight extenderDistanceSensor;
+ // private final TimeOfFlight extenderDistanceSensor;
   private final double forwardLimit, reverseLimit;
+  private final DigitalInput reverseLimitSwitch;
   
   
   double kP = Constants.ElevatorConstants.elevatorKP,
@@ -48,12 +49,12 @@ public class Elevator extends SubsystemBase {
   public Elevator() {
     elevatorMotor = new CANSparkMax(Constants.ElevatorConstants.elevatorMotorID, MotorType.kBrushless);
 
-    extenderDistanceSensor = new TimeOfFlight(ElevatorConstants.elevatorDistanceSensorID);  
+    //extenderDistanceSensor = new TimeOfFlight(ElevatorConstants.elevatorDistanceSensorID);  
 
     elevatorMotor.restoreFactoryDefaults();
     elevatorMotor.setSmartCurrentLimit(80);
     elevatorMotor.setIdleMode(IdleMode.kBrake);
-    reverseLimit = Units.inchesToMeters(.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor;
+    reverseLimit = 0;
     forwardLimit = Units.inchesToMeters(17.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor;
 
 
@@ -66,6 +67,7 @@ public class Elevator extends SubsystemBase {
     // initialze PID controller and encoder objects
     elevatorPIDController = elevatorMotor.getPIDController();
     elevatorEncoder = elevatorMotor.getEncoder();
+    reverseLimitSwitch = new DigitalInput(1);
     
 
     // set PID coefficients
@@ -94,7 +96,7 @@ public class Elevator extends SubsystemBase {
     elevatorPIDController.setSmartMotionMaxAccel(maxAcc, smartMotionSlot);
     elevatorPIDController.setSmartMotionAllowedClosedLoopError(allowedErr, smartMotionSlot);
 
-    seedEncoder();
+    //seedEncoder();
   }
 
   public void setPosition(double targetPosition){
@@ -117,12 +119,16 @@ public class Elevator extends SubsystemBase {
     elevatorMotor.getEncoder().setPosition(0);
   }
 
-  public double getDistanceSensor(){
-    return Units.metersToInches((extenderDistanceSensor.getRange()*.001)-.05588);
-  }
+  //public double getDistanceSensor(){
+   // return Units.metersToInches((extenderDistanceSensor.getRange()*.001)-.05588);
+  //}
 
-  public void seedEncoder(){
-    elevatorEncoder.setPosition(Units.inchesToMeters(getDistanceSensor()*ElevatorConstants.KElevatorMetersToNeoRotationsFactor));
+  //public void seedEncoder(){
+    //elevatorEncoder.setPosition(Units.inchesToMeters(getDistanceSensor()*ElevatorConstants.KElevatorMetersToNeoRotationsFactor));
+  //}
+
+  public boolean getLimitSwitch(){
+    return !reverseLimitSwitch.get();
   }
 
 
@@ -131,7 +137,13 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Elevator Current", getOutputCurrent());
     SmartDashboard.putNumber("Elevator Position", getPosition());
-    SmartDashboard.putNumber("Elevator Distance Sensor Position", getDistanceSensor());
-  }  
+    //SmartDashboard.putNumber("Elevator Distance Sensor Position", getDistanceSensor());
+    SmartDashboard.putBoolean("Elevator Reverse Limit Switch", getLimitSwitch());
+
+    if(getLimitSwitch()){
+      resetEncoder();
+    }
+  }
+
   
 }

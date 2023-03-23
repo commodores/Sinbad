@@ -54,8 +54,8 @@ public class Extender extends SubsystemBase {
     extenderMotor.restoreFactoryDefaults();
     extenderMotor.setSmartCurrentLimit(80);
     extenderMotor.setIdleMode(IdleMode.kBrake);
-    reverseLimit = Units.inchesToMeters(0)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor;
-    forwardLimit = Units.inchesToMeters(20)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor;
+    reverseLimit = 0;
+    forwardLimit = Units.inchesToMeters(20.75)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor;
 
     extenderMotor.setSoftLimit(SoftLimitDirection.kForward,((float)forwardLimit));
     extenderMotor.setSoftLimit(SoftLimitDirection.kReverse, ((float)reverseLimit));

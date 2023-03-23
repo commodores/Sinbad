@@ -53,6 +53,7 @@ public class RobotContainer {
     private final JoystickButton lowerElevator = new JoystickButton(driver, XboxController.Button.kBack.value);
     private final JoystickButton raiseWrist = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton lowerWrist = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton resetElevator = new JoystickButton(driver, XboxController.Button.kRightStick.value);
     
 
     /* Driver Buttons Controller 2 */
@@ -64,6 +65,7 @@ public class RobotContainer {
     private final JoystickButton high = new JoystickButton(driverTwo, XboxController.Button.kY.value);
     private final JoystickButton shelf = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
     private final JoystickButton groundUp = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
+    private final JoystickButton singleStation = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
 
 
     
@@ -124,10 +126,12 @@ public class RobotContainer {
         lowerWrist.onTrue(new ManualWrist(m_Wrist, -.5));//-------B Button
         lowerWrist.onFalse(new ManualWrist(m_Wrist, 0));
 
+       // resetElevator.onTrue(new InstantCommand(() -> m_Elevator.seedEncoder()));//-------right Stick button
+
         
         /* Driver 2 Buttons */        
 
-        intake.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(1)));//----Right Bumper
+        intake.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(.80)));//----Right Bumper
         intake.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.04)));
         release.onTrue(new InstantCommand(() -> m_Intake.runIntakeSpeed(-.8)));//----Left Bumper
         release.onFalse(new InstantCommand(() -> m_Intake.runIntakeSpeed(.04)));
@@ -137,7 +141,9 @@ public class RobotContainer {
         groundUp.onTrue(new GroundUp(m_Extender, m_Elevator, m_Wrist));//------Back Button
         mid.onTrue(new Mid(m_Extender, m_Elevator, m_Wrist));//----X Button
         high.onTrue(new High(m_Extender, m_Elevator, m_Wrist));//----Y Button
-        shelf.onTrue(new Shelf(m_Extender, m_Elevator, m_Wrist));//----Start Button        
+        shelf.onTrue(new Shelf(m_Extender, m_Elevator, m_Wrist));//----Start Button       
+        singleStation.onTrue(new SingleStation(m_Extender, m_Elevator, m_Wrist));//---Right Stick Button
+
         
     }
 

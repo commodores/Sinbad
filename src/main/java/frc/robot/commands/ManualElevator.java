@@ -22,7 +22,7 @@ public class ManualElevator extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_Elevator.seedEncoder();
+    //m_Elevator.seedEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +35,7 @@ public class ManualElevator extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_Elevator.manualElevator(0);
-    m_Elevator.seedEncoder();
+    //m_Elevator.seedEncoder();
   }
 
   // Returns true when the command should end.

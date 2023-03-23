@@ -6,31 +6,35 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ExtenderConstants;
-import frc.robot.subsystems.Wrist;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.subsystems.Elevator;
 
-public class MidWrist extends CommandBase {
-  private final Wrist m_Wrist;
-  /** Creates a new GroundArm. */
-  public MidWrist(Wrist subsystem) {
+public class SingleStationElevator extends CommandBase {
+  private final Elevator m_Elevator;
+  /** Creates a new GroundElevator. */
+  public SingleStationElevator(Elevator subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_Wrist = subsystem;
-    addRequirements(m_Wrist);
+    m_Elevator = subsystem;
+    addRequirements(m_Elevator);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    //m_Elevator.seedEncoder();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Wrist.setPosition(-50);
+    m_Elevator.setPosition(Units.inchesToMeters(6.4)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    //m_Elevator.seedEncoder();
+  }
 
   // Returns true when the command should end.
   @Override
