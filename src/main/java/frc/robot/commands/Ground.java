@@ -25,7 +25,7 @@ public class Ground extends SequentialCommandGroup {
     m_Elevator = elevatorSubsystem;
     m_Wrist = wristSubsystem;
     addCommands(
-      new GroundElevator(m_Elevator).withTimeout(1),
+      new GroundElevator(m_Elevator).withTimeout(.5),
         new ParallelCommandGroup(
           new GroundExtender(m_Extender),
           new GroundWrist(m_Wrist)

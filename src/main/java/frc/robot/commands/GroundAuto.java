@@ -13,22 +13,22 @@ import frc.robot.subsystems.Elevator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Stowed extends SequentialCommandGroup {
+public class GroundAuto extends SequentialCommandGroup {
   public final Elevator m_Elevator;
   public final Extender m_Extender;
   public final Wrist m_Wrist;
   /** Creates a new Ground. */
-  public Stowed(Extender extenderSusbsystem, Elevator elevatorSubsystem, Wrist wristSubsystem) {
+  public GroundAuto(Extender extenderSusbsystem, Elevator elevatorSubsystem, Wrist wristSubsystem) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     m_Extender = extenderSusbsystem;
     m_Elevator = elevatorSubsystem;
     m_Wrist = wristSubsystem;
     addCommands(
-      new StowedExtender(m_Extender).withTimeout(.5),
+      new GroundAutoElevator(m_Elevator).withTimeout(.5),
         new ParallelCommandGroup(
-          new StowedElevator(m_Elevator),
-          new StowedWrist(m_Wrist)
+          new GroundAutoExtender(m_Extender),
+          new GroundAutoWrist(m_Wrist)
         )
     );
   }

@@ -87,7 +87,7 @@ public class RobotContainer {
     
       Set<String> keys = autos.autos.keySet();
       autoChooser.setDefaultOption((String) keys.toArray()[1], autos.autos.get(keys.toArray()[1]));
-      keys.remove((String) keys.toArray()[0]);
+      //keys.remove((String) keys.toArray()[0]);
     
       for (String i : autos.autos.keySet()) {
         autoChooser.addOption(i, autos.autos.get(i));

@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Elevator;
 
-public class ShelfElevator extends CommandBase {
+public class GroundAutoElevator extends CommandBase {
   private final Elevator m_Elevator;
   /** Creates a new GroundElevator. */
-  public ShelfElevator(Elevator subsystem) {
+  public GroundAutoElevator(Elevator subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_Elevator = subsystem;
     addRequirements(m_Elevator);
@@ -27,13 +27,13 @@ public class ShelfElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Elevator.setPosition(Units.inchesToMeters(18.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
+    m_Elevator.setPosition(Units.inchesToMeters(5.8)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //m_Elevator.seedEncoder();
+   // m_Elevator.seedEncoder();
   }
 
   // Returns true when the command should end.

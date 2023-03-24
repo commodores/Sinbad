@@ -34,16 +34,16 @@ public class AutoCommands {
         autos = new HashMap<String, SequentialCommandGroup>();
         eventMap = new HashMap<String, Command>();
         
-        /////Do Nothing//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        autos.put("nothing", new SequentialCommandGroup(
-            new Nothing()
-        ));
-        
+         /////Do Nothing//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         autos.put("nothing", new SequentialCommandGroup(
+           new Nothing()
+         ));
+       
         /////Charge Auto//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         List<PathPlannerTrajectory> Charge = PathPlanner.loadPathGroup("Charge", new PathConstraints(1.25, 1.25));
         autos.put("Charge", new SequentialCommandGroup(
-            new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.1),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
+            new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
+            new AutoRelease(RobotContainer.m_Intake).withTimeout(1),
             getCommand(Charge),
             new AutoBalanceCommand(RobotContainer.s_Swerve),
             new AutoLock(RobotContainer.s_Swerve)
@@ -57,6 +57,36 @@ public class AutoCommands {
             new AutoLock(RobotContainer.s_Swerve)
         )); 
 
+         /////Charge + Game Piece//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         List<PathPlannerTrajectory> ChargeGamePiece = PathPlanner.loadPathGroup("ChargeGamePiece", new PathConstraints(1.25, 1.25));
+         autos.put("ChargeGamePiece", new SequentialCommandGroup(
+             new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
+             new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
+             getCommand(ChargeGamePiece),
+             new AutoBalanceCommand(RobotContainer.s_Swerve),
+             new AutoLock(RobotContainer.s_Swerve)
+         ));
+
+          /////Three Cube//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+          List<PathPlannerTrajectory> ThreeCube = PathPlanner.loadPathGroup("ThreeCube", new PathConstraints(2.2, 1.8));
+          autos.put("ThreeCube", new SequentialCommandGroup(
+              new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
+              new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
+              getCommand(ThreeCube)
+          ));
+
+           /////Three Cube//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+           List<PathPlannerTrajectory> TwoConeHigh = PathPlanner.loadPathGroup("TwoConeHigh", new PathConstraints(2.2, 1.8));
+           autos.put("TwoConeHigh", new SequentialCommandGroup(
+               new High(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2.5),
+               new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
+               new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2),
+               getCommand(TwoConeHigh),
+               new High(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2),
+               new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
+               new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2)
+           ));
+
         //Events////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         eventMap.put("runIntake", new AutoIntake(RobotContainer.m_Intake));
         eventMap.put("release", new AutoRelease(RobotContainer.m_Intake));
@@ -65,9 +95,12 @@ public class AutoCommands {
         eventMap.put("groundUp", new GroundUp(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
         eventMap.put("stow", new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
         eventMap.put("high", new High(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
-        eventMap.put("mid", new Mid(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist)); 
+        eventMap.put("mid", new Mid(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
+        eventMap.put("groundAuto", new GroundAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist)); 
+        eventMap.put("stowAuto", new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        
 
     }
 

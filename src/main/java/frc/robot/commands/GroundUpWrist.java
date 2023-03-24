@@ -25,7 +25,7 @@ public class GroundUpWrist extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Wrist.setPosition(-24.5);
+    m_Wrist.setPosition(-21);
   }
 
   // Called once the command ends or is interrupted.
