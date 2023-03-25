@@ -31,6 +31,7 @@ public class RobotContainer {
     public final static Extender m_Extender = new Extender();
     public final static Elevator m_Elevator = new Elevator();
     public final static Wrist m_Wrist = new Wrist();
+    public final static LimeLight m_LimeLight = new LimeLight();
   
     private final SendableChooser<SequentialCommandGroup> autoChooser;
     private final AutoCommands autos;    
