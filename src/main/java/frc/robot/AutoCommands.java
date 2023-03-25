@@ -64,6 +64,7 @@ public class AutoCommands {
             new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
             new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
             getCommand(ChargeGamePiece),
+            new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
             new AutoBalanceCommand(RobotContainer.s_Swerve),
             new AutoLock(RobotContainer.s_Swerve)
         ));
