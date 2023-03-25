@@ -65,7 +65,8 @@ public class RobotContainer {
     private final JoystickButton high = new JoystickButton(driverTwo, XboxController.Button.kY.value);
     private final JoystickButton shelf = new JoystickButton(driverTwo, XboxController.Button.kStart.value);
     private final JoystickButton groundUp = new JoystickButton(driverTwo, XboxController.Button.kBack.value);
-    private final JoystickButton singleStation = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
+    private final JoystickButton singleStation = new JoystickButton(driverTwo, XboxController.Button.kLeftStick.value);
+    private final JoystickButton groundCube = new JoystickButton(driverTwo, XboxController.Button.kRightStick.value);
 
 
     
@@ -142,7 +143,8 @@ public class RobotContainer {
         mid.onTrue(new Mid(m_Extender, m_Elevator, m_Wrist));//----X Button
         high.onTrue(new High(m_Extender, m_Elevator, m_Wrist));//----Y Button
         shelf.onTrue(new Shelf(m_Extender, m_Elevator, m_Wrist));//----Start Button       
-        singleStation.onTrue(new SingleStation(m_Extender, m_Elevator, m_Wrist));//---Right Stick Button
+        singleStation.onTrue(new SingleStation(m_Extender, m_Elevator, m_Wrist));//---Left Stick Button
+        groundCube.onTrue(new GroundAuto(m_Extender, m_Elevator, m_Wrist));//---Right Stick Button
 
         
     }
