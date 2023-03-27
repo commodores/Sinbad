@@ -25,7 +25,7 @@ public class High extends SequentialCommandGroup {
     m_Elevator = elevatorSubsystem;
     m_Wrist = wristSubsystem;
     addCommands(
-      new HighElevator(m_Elevator).withTimeout(1),
+      new HighElevator(m_Elevator).withTimeout(1.5),
         new ParallelCommandGroup(
           new HighExtender(m_Extender),
           new HighWrist(m_Wrist)

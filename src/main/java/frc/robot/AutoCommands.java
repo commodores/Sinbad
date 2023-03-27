@@ -95,8 +95,8 @@ public class AutoCommands {
             new High(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2.5),
             new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
             new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2),
-            getCommand(Gather),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(.5)
+            getCommand(Gather)
+          
         ));
 
         //Events////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

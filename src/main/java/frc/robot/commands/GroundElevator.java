@@ -27,7 +27,7 @@ public class GroundElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Elevator.setPosition(Units.inchesToMeters(4.7)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
+    m_Elevator.setPosition(Units.inchesToMeters(5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
   }
 
   // Called once the command ends or is interrupted.

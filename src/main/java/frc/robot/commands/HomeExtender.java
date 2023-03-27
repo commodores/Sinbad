@@ -25,7 +25,7 @@ public class HomeExtender extends CommandBase {
   @Override
   public void initialize() {
 
-    m_Extender.setEncoder(Units.inchesToMeters(20)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
+    m_Extender.setEncoder(Units.inchesToMeters(22)*ExtenderConstants.KExtenderMetersToNeoRotationsFactor);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

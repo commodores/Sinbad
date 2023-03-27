@@ -171,7 +171,7 @@ public final class Constants {
         public static final double extenderKI = 0.00000;
         public static final double extenderKD = 0; 
         public static final double extenderKIz = 0; 
-        public static final double extenderKFF = 0.0018; 
+        public static final double extenderKFF = 0.002; 
         public static final double extenderKMaxOutput = 1; 
         public static final double extenderKMinOutput = -1;
         public static final double extenderMaxRPM = 5700;
@@ -180,7 +180,7 @@ public final class Constants {
         public static final int extenderMinVel = 0; // rpm
         public static final int extenderMaxVel = 2000; // rpm
         public static final int extenderMaxAcc = 2000;
-        public static final double extenderAllowedErr = .25;
+        public static final double extenderAllowedErr = .2;
 
         private final static double _gearRatio = 22; // 4:1 cartridge + 4:1 cartrdige + 1.375 
         private final static double _winchDia_in = 1.79; // For PWF Arm
@@ -201,7 +201,7 @@ public final class Constants {
         public static final double elevatorKI = 0.00000;
         public static final double elevatorKD = 0; 
         public static final double elevatorKIz = 0; 
-        public static final double elevatorKFF = 0.0008; 
+        public static final double elevatorKFF = 0.002; 
         public static final double elevatorKMaxOutput = 1; 
         public static final double elevatorKMinOutput = -1;
         public static final double elevatorMaxRPM = 5700;
@@ -210,9 +210,9 @@ public final class Constants {
         public static final int elevatorMinVel = 0; // rpm
         public static final int elevatorMaxVel = 2000; // rpm
         public static final int elevatorMaxAcc = 2000;
-        public static final double elevatorAllowedErr = .15;
+        public static final double elevatorAllowedErr = .2;
 
-        private final static double _gearRatio = 36; // 4:1 cartridge + 3:1 cartrdige + 3:1 Cartridge 
+        private final static double _gearRatio = 49.5; // 4:1 cartridge + 3:1 cartrdige + 3:1 Cartridge + 1.375 
         private final static double _winchDia_in = 1.79; // For PWF Arm
         private final static double _winchDia_m = Units.inchesToMeters(_winchDia_in);
         private final static double _winchCircumference_m = _winchDia_m * Math.PI;
@@ -233,7 +233,7 @@ public final class Constants {
          public static final double wristKI = 0.00000;
          public static final double wristKD = 0; 
          public static final double wristKIz = 0; 
-         public static final double wristKFF = 0.001; 
+         public static final double wristKFF = 0.0015; 
          public static final double wristKMaxOutput = 1; 
          public static final double wristKMinOutput = -1;
          public static final double wristMaxRPM = 5700;
@@ -242,7 +242,7 @@ public final class Constants {
          public static final int wristMinVel = 0; // rpm
          public static final int wristMaxVel = 2500; // rpm
          public static final int wristMaxAcc = 2000;
-         public static final double wristAllowedErr = .15;
+         public static final double wristAllowedErr = .2;
         
 
     }

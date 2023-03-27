@@ -29,7 +29,7 @@ public class HomeElevator extends CommandBase {
   @Override
   public void initialize() {
 
-    m_Elevator.setEncoder(Units.inchesToMeters(18.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
+    m_Elevator.setEncoder(Units.inchesToMeters(20)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

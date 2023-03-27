@@ -95,7 +95,7 @@ public class Wrist extends SubsystemBase {
   }
 
   public void resetEncoder(){
-    wristEncoder.setPosition(8);
+    wristEncoder.setPosition(10);
   }
 
   public void setEncoder(double position){

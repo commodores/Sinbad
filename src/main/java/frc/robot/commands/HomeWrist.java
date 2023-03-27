@@ -23,7 +23,7 @@ public class HomeWrist extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_Wrist.setEncoder(-54);
+    m_Wrist.setEncoder(-60);
 
     m_Intake.runIntakeSpeed(0);
   }

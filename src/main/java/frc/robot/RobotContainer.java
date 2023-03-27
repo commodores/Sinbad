@@ -113,14 +113,14 @@ public class RobotContainer {
 
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));//----Y Button
         
-        extendArm.onTrue(new ManualExtender(m_Extender, .7));//----Right Bumper
+        extendArm.onTrue(new ManualExtender(m_Extender, .8));//----Right Bumper
         extendArm.onFalse(new ManualExtender(m_Extender, 0).withTimeout(0.1));
-        retractArm.onTrue(new ManualExtender(m_Extender, -.7));//----Left Bumper
+        retractArm.onTrue(new ManualExtender(m_Extender, -.8));//----Left Bumper
         retractArm.onFalse(new ManualExtender(m_Extender, 0).withTimeout(0.1));
        
-        raiseElevator.onTrue(new ManualElevator(m_Elevator, .5));//----Start Button
+        raiseElevator.onTrue(new ManualElevator(m_Elevator, .8));//----Start Button
         raiseElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
-        lowerElevator.onTrue(new ManualElevator(m_Elevator, -.5));//----Back Button
+        lowerElevator.onTrue(new ManualElevator(m_Elevator, -.8));//----Back Button
         lowerElevator.onFalse(new ManualElevator(m_Elevator, 0).withTimeout(0.1));
 
         raiseWrist.onTrue(new ManualWrist(m_Wrist, .5));//-------A Button

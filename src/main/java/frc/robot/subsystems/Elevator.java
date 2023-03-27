@@ -55,7 +55,7 @@ public class Elevator extends SubsystemBase {
     elevatorMotor.setSmartCurrentLimit(80);
     elevatorMotor.setIdleMode(IdleMode.kBrake);
     reverseLimit = 0;
-    forwardLimit = Units.inchesToMeters(18.5)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor;
+    forwardLimit = Units.inchesToMeters(19)*ElevatorConstants.KElevatorMetersToNeoRotationsFactor;
 
 
     elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, ((float)forwardLimit));
