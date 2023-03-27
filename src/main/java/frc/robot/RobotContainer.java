@@ -55,6 +55,7 @@ public class RobotContainer {
     private final JoystickButton raiseWrist = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton lowerWrist = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton homeEverything = new JoystickButton(driver, XboxController.Button.kRightStick.value);
+    private final JoystickButton alignRobot = new JoystickButton(driver, XboxController.Button.kLeftStick.value);
     
 
     /* Driver Buttons Controller 2 */
@@ -129,6 +130,7 @@ public class RobotContainer {
         lowerWrist.onFalse(new ManualWrist(m_Wrist, 0));
 
         homeEverything.onTrue(new Home(m_Extender, m_Elevator, m_Wrist, m_Intake));//-------right Stick button
+        alignRobot.onTrue(new AlignToTarget());//-------left Stick button
 
         
         /* Driver 2 Buttons */        

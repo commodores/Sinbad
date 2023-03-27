@@ -6,8 +6,8 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 public class AlignToTarget extends CommandBase {
-  double Kp = 0.009;
-  double min_command = 1;
+  double Kp = 0.000001;
+  double min_command = .9;
 
   public AlignToTarget() {
         // Use requires() here to declare subsystem dependencies
@@ -30,7 +30,7 @@ public class AlignToTarget extends CommandBase {
       
       if (RobotContainer.m_LimeLight.getYAngle() > 0.0)
       {
-              steering_adjust = Kp*heading_error - min_command;
+              steering_adjust = -(Kp*heading_error + min_command);
       }
       else if (RobotContainer.m_LimeLight.getYAngle() < 0.0)
       {
