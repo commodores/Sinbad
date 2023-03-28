@@ -25,7 +25,7 @@ public class AlignToTarget extends CommandBase {
     @Override
     public void execute() {
 
-      double heading_error = - RobotContainer.m_LimeLight.getYAngle();
+      double heading_error =  -RobotContainer.m_LimeLight.getYAngle();
       double steering_adjust = 0.0;
       
       if (RobotContainer.m_LimeLight.getYAngle() > 0.0)

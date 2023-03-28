@@ -32,7 +32,7 @@ public class HomeExtender extends CommandBase {
   @Override
   public void execute() {
 
-    m_Extender.manualExtender(-.4);
+    m_Extender.manualExtender(-.7);
   }
 
   // Called once the command ends or is interrupted.
