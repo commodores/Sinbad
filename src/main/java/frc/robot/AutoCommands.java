@@ -64,7 +64,6 @@ public class AutoCommands {
             new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
             new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
             getCommand(ChargeGamePiece),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
             new AutoBalanceCommand(RobotContainer.s_Swerve),
             new AutoLock(RobotContainer.s_Swerve)
         ));
@@ -74,7 +73,8 @@ public class AutoCommands {
         autos.put("ThreeCube", new SequentialCommandGroup(
             new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
             new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
-            getCommand(ThreeCube)
+            getCommand(ThreeCube),
+            new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2)
         ));
 
         /////Two Piece High//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,12 +92,25 @@ public class AutoCommands {
         /////Gather//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         List<PathPlannerTrajectory> Gather = PathPlanner.loadPathGroup("Gather", new PathConstraints(2.5, 2));
         autos.put("Gather", new SequentialCommandGroup(
-            new High(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2.5),
+            new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
             new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
-            new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2),
-            getCommand(Gather)
+            getCommand(Gather),
+            new AutoRelease(RobotContainer.m_Intake).withTimeout(.5)
           
         ));
+
+         /////High Mid Cube//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         List<PathPlannerTrajectory> HighMidCube = PathPlanner.loadPathGroup("HighMidCube", new PathConstraints(2.5, 2));
+         autos.put("HighMidCube", new SequentialCommandGroup(
+             new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
+             new High(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2.5),
+             new AutoRelease(RobotContainer.m_Intake).withTimeout(.1),
+             new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2),
+             getCommand(HighMidCube),
+             new Mid(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2),
+             new AutoRelease(RobotContainer.m_Intake).withTimeout(.1),
+             new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2)
+         ));
 
         //Events////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         eventMap.put("runIntake", new AutoIntake(RobotContainer.m_Intake));

@@ -12,7 +12,7 @@ public class AutoBalanceCommand extends CommandBase {
     private final Swerve m_Swerve;
     double elevationAngle;
     double errorThreshold;
-    boolean stopCheck;
+    int stopCheck;
 
     public AutoBalanceCommand(Swerve subsystem) {
         m_Swerve = subsystem;
@@ -23,7 +23,7 @@ public class AutoBalanceCommand extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        stopCheck = false;
+        stopCheck = 0;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -37,19 +37,24 @@ public class AutoBalanceCommand extends CommandBase {
             m_Swerve.drive(new Translation2d(-Constants.Swerve.balanceSpeedMod,0), 0, true, true);
         } else {
             m_Swerve.drive(new Translation2d(0,0), 0, true, true);
-            stopCheck = true;
+            stopCheck++;
         }
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        stopCheck = false;
+                /* Get Values, Deadband*/
+                double translationVal = 0;
+                double strafeVal = 0;
+                double rotationVal = 0.05;
+                m_Swerve.drive(new Translation2d(translationVal, strafeVal).times(Constants.Swerve.maxSpeed), rotationVal * Constants.Swerve.maxAngularVelocity, true, true);
     }
 
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return false;
+        return stopCheck > 50;
+
     }
 }
