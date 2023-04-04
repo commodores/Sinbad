@@ -112,6 +112,15 @@ public class AutoCommands {
              new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2)
          ));
 
+         /////Three Cube Score//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        List<PathPlannerTrajectory> ThreeCubeScore = PathPlanner.loadPathGroup("ThreeCubeScore", new PathConstraints(3, 3));
+        autos.put("ThreeCubeScore", new SequentialCommandGroup(
+            new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
+            new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
+            getCommand(ThreeCubeScore),
+            new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2)
+        ));
+
         //Events////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         eventMap.put("runIntake", new AutoIntake(RobotContainer.m_Intake));
         eventMap.put("release", new AutoRelease(RobotContainer.m_Intake));
