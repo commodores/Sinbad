@@ -146,8 +146,8 @@ public final class Constants {
     
         public static final double kPXController = 4;
         public static final double kPYController = 4;
-        public static final double kPXandYControllers = 4;
-        public static final double kPThetaController = 4;
+        public static final double kPXandYControllers = 5;
+        public static final double kPThetaController = 5;
 
         public static final double maxPlatformPositivePitch = 6;
         public static final double maxPlatformNegativePitch = -6;

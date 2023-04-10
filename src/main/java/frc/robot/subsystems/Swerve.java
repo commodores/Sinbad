@@ -135,11 +135,16 @@ public class Swerve extends SubsystemBase {
 
     /** Resets the gyro to a heading of 0 */
     public void zeroGyro(){
-        zeroGyro(0);
+        setGyro(0);
+    }
+
+    /** Reset Gyro for Driver */
+    public void flipGyro(){
+        setGyro(180);
     }
 
     /** Resets the gyro to a given heading */
-    public void zeroGyro(double angle){
+    public void setGyro(double angle){
         gyro.setYaw(angle);
     }
 

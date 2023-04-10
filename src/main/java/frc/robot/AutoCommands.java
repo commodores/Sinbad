@@ -48,7 +48,7 @@ public class AutoCommands {
         )); 
        
         /////Charge Auto//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        List<PathPlannerTrajectory> Charge = PathPlanner.loadPathGroup("Charge", new PathConstraints(1.25, 1.25));
+        List<PathPlannerTrajectory> Charge = PathPlanner.loadPathGroup("Charge", new PathConstraints(1.4, 1.4));
         autos.put("Charge", new SequentialCommandGroup(
             new High(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2.5),
             new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
@@ -68,14 +68,7 @@ public class AutoCommands {
             new AutoLock(RobotContainer.s_Swerve)
         ));
 
-        /////Three Cube//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        List<PathPlannerTrajectory> ThreeCube = PathPlanner.loadPathGroup("ThreeCube", new PathConstraints(2.5, 2));
-        autos.put("ThreeCube", new SequentialCommandGroup(
-            new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
-            new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
-            getCommand(ThreeCube),
-            new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2)
-        ));
+       
 
         /////Two Piece High//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         List<PathPlannerTrajectory> TwoPieceHigh = PathPlanner.loadPathGroup("TwoPieceHigh", new PathConstraints(2.5, 2));
@@ -113,11 +106,20 @@ public class AutoCommands {
          ));
 
          /////Three Cube Score//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        List<PathPlannerTrajectory> ThreeCubeScore = PathPlanner.loadPathGroup("ThreeCubeScore", new PathConstraints(3, 3));
-        autos.put("ThreeCubeScore", new SequentialCommandGroup(
+        List<PathPlannerTrajectory> ThreeCubeInOut = PathPlanner.loadPathGroup("ThreeCubeInOut", new PathConstraints(3, 3));
+        autos.put("ThreeCubeInOut", new SequentialCommandGroup(
             new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
             new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
-            getCommand(ThreeCubeScore),
+            getCommand(ThreeCubeInOut),
+            new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2)
+        ));
+
+        /////Three Cube Score Number Two//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        List<PathPlannerTrajectory> ThreeCubeOutIn = PathPlanner.loadPathGroup("ThreeCubeOutIn", new PathConstraints(3, 3));
+        autos.put("ThreeCubeOutIn", new SequentialCommandGroup(
+            new Stowed(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(.5),
+            new AutoRelease(RobotContainer.m_Intake).withTimeout(.5),
+            getCommand(ThreeCubeOutIn),
             new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist).withTimeout(2)
         ));
 
@@ -132,6 +134,7 @@ public class AutoCommands {
         eventMap.put("mid", new Mid(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
         eventMap.put("groundAuto", new GroundAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist)); 
         eventMap.put("stowAuto", new StowAuto(RobotContainer.m_Extender, RobotContainer.m_Elevator, RobotContainer.m_Wrist));
+        eventMap.put("nothing", new Nothing().withTimeout(2));
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         

@@ -36,7 +36,7 @@ public class HomeElevator extends CommandBase {
   @Override
   public void execute() {
 
-    m_Elevator.manualElevator(-0.7);
+    m_Elevator.manualElevator(-0.85);
   }
 
   // Called once the command ends or is interrupted.
