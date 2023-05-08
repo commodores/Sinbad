@@ -201,7 +201,7 @@ public final class Constants {
         public static final double elevatorKI = 0.00000;
         public static final double elevatorKD = 0; 
         public static final double elevatorKIz = 0; 
-        public static final double elevatorKFF = 0.002; 
+        public static final double elevatorKFF = 0.0018; 
         public static final double elevatorKMaxOutput = 1; 
         public static final double elevatorKMinOutput = -1;
         public static final double elevatorMaxRPM = 5700;
